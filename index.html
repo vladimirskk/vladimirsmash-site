@@ -297,6 +297,14 @@
   </div>
 </footer>
 
+<!-- ===== ORDER TRACKING BAR ===== -->
+<sc-if value="{{ hasTrackOrder }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 75; display: flex; align-items: center; gap: 14px; color: #fff; padding: 14px 18px; border-radius: 999px; box-shadow: 0 16px 44px rgba(11,10,10,.35); font: 700 14px 'Archivo', sans-serif; width: max-content; max-width: calc(100vw - 32px); {{ trackStyle }}">
+    <span>{{ trackText }}</span>
+    <button onClick="{{ dismissTrack }}" style-hover="opacity: .7;" style="border: none; background: rgba(255,255,255,.2); color: #fff; width: 26px; height: 26px; border-radius: 999px; cursor: pointer; font: 700 14px 'Archivo', sans-serif; flex: none;">✕</button>
+  </div>
+</sc-if>
+
 <!-- ===== FLOATING CART BAR ===== -->
 <sc-if value="{{ showBar }}" hint-placeholder-val="{{ false }}">
   <button onClick="{{ openCart }}" style-hover="transform: translateX(-50%) scale(1.02);" style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 14px; border: 1px solid rgba(255,255,255,.4); cursor: pointer; background: rgba(0,23,192,.85); backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6); color: #fff; padding: 14px 22px; border-radius: 999px; box-shadow: 0 16px 44px rgba(0,23,192,.4); font: 700 15px 'Archivo', sans-serif; animation: vs-pop .3s ease both; width: max-content; max-width: calc(100vw - 32px); transition: transform .15s ease;">
@@ -431,8 +439,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
       </div>
       <h3 style="margin: 0 0 8px; font: 900 26px 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em;">{{ t.confTitle }}</h3>
-      <p style="margin: 0 0 6px; font: 500 15px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.65);">{{ confText }}</p>
-      <p style="margin: 0 0 22px; font: 700 14px 'Archivo', sans-serif; color: #0017c0;">{{ t.confPos }}</p>
+      <p style="margin: 0 0 22px; font: 500 15px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.65);">{{ confText }}</p>
       <button onClick="{{ resetOrder }}" style-hover="background: #0012a0;" style="width: 100%; height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.confClose }}</button>
     </div>
   </div>
@@ -497,13 +504,19 @@ class Component extends DCLogic {
   async placeOrderSupabase(order) {
     if (!window.__sbClient) return;
     const code = Math.floor(1000 + Math.random() * 9000).toString();
-    const { error } = await window.__sbClient.from('online_orders').insert({
+    const { data, error } = await window.__sbClient.from('online_orders').insert({
       restaurant_id: 'vladimirsmash', code, status: 'pending', source: 'site',
       customer_name: order.name, customer_phone: order.phone, address: order.address || '',
       fulfillment: order.mode, payment: order.method, items: order.items,
       subtotal: order.subtotal, delivery_fee: order.fee, total: order.total
-    });
-    if (error) console.error('order insert error', error);
+    }).select().single();
+    if (error) { console.error('order insert error', error); return code; }
+    this.setState({ trackOrder: { id: data.id, code, status: 'pending' } });
+    window.__sbClient.channel('track-order-' + data.id)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'online_orders', filter: 'id=eq.' + data.id }, (payload) => {
+        this.setState(s => s.trackOrder && s.trackOrder.id === data.id ? { trackOrder: { ...s.trackOrder, status: payload.new.status } } : {});
+      })
+      .subscribe();
     return code;
   }
 
@@ -603,7 +616,8 @@ class Component extends DCLogic {
       cartTitle: 'Coșul tău', cartEmpty: 'Coșul e gol. Adaugă un smash din meniu.', upsellTitle: 'Merge perfect cu',
       minWarn: 'Comanda minimă pentru livrare este de {min} RON. Mai adaugă ceva bun.',
       payCard: 'Plătește cu cardul', barView: 'Vezi coșul',
-      confTitle: 'Comandă trimisă!', conf: 'Comanda {id} ({total}) a fost înregistrată — {mode}.', confModeD: 'livrare', confModeP: 'ridicare din locație', confPos: 'Trimisă direct către sistemul tău POS.', confClose: 'Super, mulțumesc',
+      confTitle: 'Comandă trimisă!', conf: 'Comanda {id} ({total}) a fost înregistrată — {mode}.', confModeD: 'livrare', confModeP: 'ridicare din locație', confClose: 'Super, mulțumesc',
+      trackPending: 'Comanda {code} e la restaurant, așteaptă confirmarea…', trackAccepted: 'Comanda {code} a fost acceptată! Se pregătește.', trackRejected: 'Comanda {code} a fost respinsă. Sună-ne pentru detalii.',
       upsellAdded: 'Adăugat în coș', upsellQ: 'Vrei cartofi, băutură sau desert pe lângă?', upsellNo: 'Nu, mulțumesc', upsellDone: 'Gata, adaugă la comandă',
       custName: 'Nume', custPhone: 'Telefon', custAddress: 'Adresă livrare',
       ftContact: 'Contact', ftHours: 'Orar', ftLinks: 'Linkuri', ftRights: 'Toate drepturile rezervate.'
@@ -633,7 +647,8 @@ class Component extends DCLogic {
       cartTitle: 'Your cart', cartEmpty: 'Your cart is empty. Add a smash from the menu.', upsellTitle: 'Goes perfectly with',
       minWarn: 'Minimum order for delivery is {min} RON. Add something tasty.',
       payCard: 'Pay by card', barView: 'View cart',
-      confTitle: 'Order sent!', conf: 'Order {id} ({total}) has been placed — {mode}.', confModeD: 'delivery', confModeP: 'pickup', confPos: 'Sent straight to your POS system.', confClose: 'Great, thanks',
+      confTitle: 'Order sent!', conf: 'Order {id} ({total}) has been placed — {mode}.', confModeD: 'delivery', confModeP: 'pickup', confClose: 'Great, thanks',
+      trackPending: 'Order {code} is with the restaurant, awaiting confirmation…', trackAccepted: 'Order {code} has been accepted! Being prepared.', trackRejected: 'Order {code} was declined. Please call us.',
       upsellAdded: 'Added to cart', upsellQ: 'Want fries, a drink or dessert with that?', upsellNo: 'No, thanks', upsellDone: 'Done, add to order',
       custName: 'Name', custPhone: 'Phone', custAddress: 'Delivery address',
       ftContact: 'Contact', ftHours: 'Hours', ftLinks: 'Links', ftRights: 'All rights reserved.'
@@ -658,6 +673,20 @@ class Component extends DCLogic {
   }
 
   ron(v) { return v.toFixed(0) + ' RON'; }
+
+  trackText(t) {
+    const o = this.state.trackOrder;
+    if (!o) return '';
+    if (o.status === 'pending') return t.trackPending.replace('{code}', o.code);
+    if (o.status === 'rejected') return t.trackRejected.replace('{code}', o.code);
+    return t.trackAccepted.replace('{code}', o.code);
+  }
+
+  trackStyle() {
+    const o = this.state.trackOrder;
+    const bg = !o || o.status === 'pending' ? '#0b0a0a' : o.status === 'rejected' ? '#b3261e' : '#0017c0';
+    return 'background: ' + bg + ';';
+  }
 
   renderVals() {
     const t = this.i18n();
@@ -761,6 +790,9 @@ class Component extends DCLogic {
       roBtnStyle: langSeg(lang === 'ro'), enBtnStyle: langSeg(lang === 'en'),
       payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'),
       ordered: !!this.state.ordered,
+      trackOrder: this.state.trackOrder, hasTrackOrder: !!this.state.trackOrder,
+      trackText: this.trackText(t), trackStyle: this.trackStyle(),
+      dismissTrack: () => this.setState({ trackOrder: null }),
       confText: this.state.ordered ? t.conf.replace('{id}', this.state.ordered.id).replace('{total}', this.ron(this.state.ordered.total)).replace('{mode}', this.state.ordered.mode === 'delivery' ? t.confModeD : t.confModeP) : '',
       resetOrder: () => this.setState({ ordered: null })
     };
