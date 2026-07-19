@@ -97,7 +97,7 @@
   </div>
   <div style="position: sticky; top: 74px; z-index: 40; padding: 12px clamp(20px, 5vw, 72px); background: #fbfbfa; border-bottom: 1px solid rgba(11,10,10,.08);">
     <div style="position: relative;">
-      <div ref="{{ catRowRef }}" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
+      <div ref="{{ catRowRef }}" onTouchStart="{{ onTouchStart }}" onTouchEnd="{{ onTouchEnd }}" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;">
         <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
           <button onClick="{{ c.select }}" style-hover="border-color: #0017c0; color: #0017c0;" style="{{ c.style }}">{{ c.label }}</button>
         </sc-for>
@@ -107,7 +107,7 @@
       </div>
     </div>
   </div>
-  <div ref="{{ productsRef }}" onTouchStart="{{ onTouchStart }}" onTouchEnd="{{ onTouchEnd }}" style="padding: 8px clamp(20px, 5vw, 72px) 0; touch-action: pan-y; position: relative; overflow: hidden;">
+  <div ref="{{ productsRef }}" style="padding: 8px clamp(20px, 5vw, 72px) 0; touch-action: pan-y; position: relative; overflow: hidden;">
     <sc-if value="{{ showOutgoing }}" hint-placeholder-val="{{ false }}">
       <div style="{{ outgoingStyle }}">
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 18px;">
@@ -230,44 +230,32 @@
   <div style="font: 800 13px 'Archivo', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: #0017c0;">{{ t.mapKicker }}</div>
   <h2 style="margin: 10px 0 0; font: 900 clamp(34px, 5vw, 64px)/1 'Archivo', sans-serif; letter-spacing: -.02em; text-transform: uppercase;">{{ t.mapTitle }}</h2>
   <div style="height: 2px; background: #0017c0; margin: 22px 0 26px;"></div>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; align-items: stretch;">
-    <div style="position: relative; border-radius: 28px; overflow: hidden; border: 1px solid rgba(11,10,10,.15); min-height: 460px;">
-      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=23.508%2C47.618%2C23.662%2C47.694&amp;layer=mapnik" style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: grayscale(1) contrast(1.05);" loading="lazy" title="Harta Baia Mare"></iframe>
-      <div style="position: absolute; inset: 0; pointer-events: none;">
-        <div style="position: absolute; left: 50%; top: 50%; width: 38%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 999px; border: 2.5px solid #0017c0; background: rgba(0,23,192,.10);"></div>
-        <div style="position: absolute; left: 50%; top: 50%; width: 76%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 999px; border: 2px dashed #0017c0; background: rgba(0,23,192,.045);"></div>
-        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 999px; background: #0017c0; box-shadow: 0 0 0 5px rgba(0,23,192,.25);"></div>
-        <span style="position: absolute; left: 50%; top: calc(50% - 19%); transform: translate(-50%, -100%); background: rgba(255,255,255,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(0,23,192,.3); color: #0017c0; font: 800 12px 'Archivo', sans-serif; letter-spacing: .1em; padding: 6px 12px; border-radius: 999px;">{{ t.zone1 }}</span>
-        <span style="position: absolute; left: 50%; top: calc(50% - 38%); transform: translate(-50%, -100%); background: rgba(255,255,255,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(0,23,192,.3); color: #0017c0; font: 800 12px 'Archivo', sans-serif; letter-spacing: .1em; padding: 6px 12px; border-radius: 999px;">{{ t.zone2 }}</span>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; align-items: stretch;">
+    <div style="border: 1px solid rgba(11,10,10,.12); border-radius: 24px; padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+      <div>
+        <div style="font: 800 17px 'Archivo', sans-serif; text-transform: uppercase;">{{ t.zone1 }}</div>
+        <div style="font: 400 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.55); margin-top: 4px;">{{ t.zone1Desc }}</div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font: 900 24px 'Archivo', sans-serif; color: #0017c0; white-space: nowrap;">{{ zone1FeeLbl }}</div>
+        <div style="font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.5); white-space: nowrap;">{{ minOrderLbl }}</div>
       </div>
     </div>
-    <div style="display: flex; flex-direction: column; gap: 14px;">
-      <div style="border: 1px solid rgba(11,10,10,.12); border-radius: 24px; padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-        <div>
-          <div style="font: 800 17px 'Archivo', sans-serif; text-transform: uppercase;">{{ t.zone1 }}</div>
-          <div style="font: 400 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.55); margin-top: 4px;">{{ t.zone1Desc }}</div>
-        </div>
-        <div style="text-align: right;">
-          <div style="font: 900 24px 'Archivo', sans-serif; color: #0017c0; white-space: nowrap;">{{ zone1FeeLbl }}</div>
-          <div style="font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.5); white-space: nowrap;">{{ minOrderLbl }}</div>
-        </div>
+    <div style="border: 1px solid rgba(11,10,10,.12); border-radius: 24px; padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+      <div>
+        <div style="font: 800 17px 'Archivo', sans-serif; text-transform: uppercase;">{{ t.zone2 }}</div>
+        <div style="font: 400 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.55); margin-top: 4px;">{{ t.zone2Desc }}</div>
       </div>
-      <div style="border: 1px solid rgba(11,10,10,.12); border-radius: 24px; padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-        <div>
-          <div style="font: 800 17px 'Archivo', sans-serif; text-transform: uppercase;">{{ t.zone2 }}</div>
-          <div style="font: 400 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.55); margin-top: 4px;">{{ t.zone2Desc }}</div>
-        </div>
-        <div style="text-align: right;">
-          <div style="font: 900 24px 'Archivo', sans-serif; color: #0017c0; white-space: nowrap;">{{ zone2FeeLbl }}</div>
-          <div style="font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.5); white-space: nowrap;">{{ minOrderLbl }}</div>
-        </div>
+      <div style="text-align: right;">
+        <div style="font: 900 24px 'Archivo', sans-serif; color: #0017c0; white-space: nowrap;">{{ zone2FeeLbl }}</div>
+        <div style="font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.5); white-space: nowrap;">{{ minOrderLbl }}</div>
       </div>
-      <div style="background: #0017c0; color: #fff; border-radius: 24px; padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
-        <div style="font: 800 13px 'Archivo', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #c9d0ff;">{{ t.pickupKicker }}</div>
-        <div style="font: 800 20px/1.25 'Archivo', sans-serif;">Vasile Alecsandri 15, Baia Mare</div>
-        <div style="font: 500 15px 'Archivo', sans-serif; color: rgba(255,255,255,.75);">{{ t.hours }}: Luni – Vineri, 11:00 – 22:00</div>
-        <a href="tel:+40746027011" style="color: #b8c2ff; font: 700 16px 'Archivo', sans-serif;">+40 746 027 011</a>
-      </div>
+    </div>
+    <div style="background: #0017c0; color: #fff; border-radius: 24px; padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+      <div style="font: 800 13px 'Archivo', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #c9d0ff;">{{ t.pickupKicker }}</div>
+      <div style="font: 800 20px/1.25 'Archivo', sans-serif;">Vasile Alecsandri 15, Baia Mare</div>
+      <div style="font: 500 15px 'Archivo', sans-serif; color: rgba(255,255,255,.75);">{{ t.hours }}: Luni – Vineri, 11:00 – 22:00</div>
+      <a href="tel:+40746027011" style="color: #b8c2ff; font: 700 16px 'Archivo', sans-serif;">+40 746 027 011</a>
     </div>
   </div>
 </section>
@@ -293,9 +281,60 @@
         <a href="#livrare" style="color: #fff;">{{ t.mapTitle }}</a>
       </div>
     </div>
-    <div style="align-self: end; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.65);">© 2026 VLADIMIR SMASH.<br>{{ t.ftRights }}</div>
+    <div>
+      <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px;">Legal</div>
+      <div style="display: flex; flex-direction: column; gap: 6px; font: 500 15px 'Archivo', sans-serif;">
+        <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Termeni și condiții</button>
+        <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Confidențialitate (GDPR)</button>
+        <button onClick="{{ openCookies }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Politica cookie-uri</button>
+        <button onClick="{{ openAnpc }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">ANPC / Soluționare litigii (SOL)</button>
+      </div>
+    </div>
   </div>
+  <div style="height: 2px; background: rgba(255,255,255,.3); margin: 28px 0;"></div>
+  <div style="font: 400 12px/1.7 'Archivo', sans-serif; color: rgba(255,255,255,.55); max-width: 640px;">
+    <strong style="color: rgba(255,255,255,.8);">[Denumire firmă] S.R.L.</strong> · CUI [de completat] · Nr. Reg. Com. [de completat] · Sediu: [de completat] · Operator date cu caracter personal conform Regulamentului (UE) 2016/679.
+  </div>
+  <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.65);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
 </footer>
+
+<!-- ===== LEGAL MODAL ===== -->
+<sc-if value="{{ legalOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; inset: 0; z-index: 120; background: rgba(11,10,10,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 20px;" onClick="{{ closeLegal }}">
+    <div style="background: rgba(255,255,255,.96); backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,.9); border-radius: 28px; padding: 32px 28px; max-width: 620px; width: 100%; max-height: 78vh; overflow-y: auto; box-shadow: 0 40px 100px rgba(11,10,10,.35); animation: vs-pop .3s cubic-bezier(.2,.9,.3,1.2) both;" onClick="{{ stopProp }}">
+      <h3 style="margin: 0 0 16px; font: 900 22px/1.15 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: #0017c0;">{{ legalTitle }}</h3>
+      <sc-if value="{{ isTerms }}" hint-placeholder-val="{{ false }}">
+        <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
+          <p>Comenzile plasate prin acest site reprezintă comenzi ferme, conform Ordonanței de Urgență nr. 34/2014 privind drepturile consumatorilor.</p>
+          <p>Produsele oferite sunt preparate alimentare proaspete, cu grad ridicat de perisabilitate. Conform art. 16 lit. c) din OUG 34/2014, dreptul de retragere din contract nu se aplică furnizării de produse alimentare perisabile pregătite la comandă.</p>
+          <p>Plata se poate face numerar sau cu cardul la livrare/ridicare, ori online cu cardul, atunci când această opțiune este disponibilă. Prețurile afișate includ TVA.</p>
+          <p>Pentru orice reclamație legată de o comandă, ne poți contacta telefonic sau la adresa de e-mail afișată în secțiunea de contact.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
+        <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
+          <p>Operator de date: <strong>[Denumire firmă] S.R.L.</strong>, CUI [de completat], sediu [de completat].</p>
+          <p>Colectăm numele, numărul de telefon și adresa de livrare exclusiv pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).</p>
+          <p>Nu vindem și nu cedăm datele tale unor terți în scop de marketing. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.</p>
+          <p>Ai dreptul de acces, rectificare, ștergere și opoziție cu privire la datele tale — ne poți scrie la adresa de e-mail din secțiunea de contact. Te poți adresa și Autorității Naționale de Supraveghere a Prelucrării Datelor cu Caracter Personal (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener" style="color: #0017c0;">dataprotection.ro</a>).</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isCookies }}" hint-placeholder-val="{{ false }}">
+        <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
+          <p>Acest site folosește doar cookie-uri strict necesare funcționării — de exemplu, pentru a păstra coșul de comandă și limba preferată în timpul sesiunii tale.</p>
+          <p>Nu folosim cookie-uri de marketing sau de urmărire (tracking) ale unor terți.</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isAnpc }}" hint-placeholder-val="{{ false }}">
+        <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
+          <p>Conform legislației privind protecția consumatorilor, te informăm că poți depune o reclamație la Autoritatea Națională pentru Protecția Consumatorilor (ANPC): <a href="https://anpc.ro" target="_blank" rel="noopener" style="color: #0017c0;">anpc.ro</a>.</p>
+          <p>De asemenea, poți folosi platforma europeană de Soluționare Online a Litigiilor (SOL): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style="color: #0017c0;">ec.europa.eu/consumers/odr</a>.</p>
+        </div>
+      </sc-if>
+      <button onClick="{{ closeLegal }}" style-hover="background: #0012a0;" style="width: 100%; margin-top: 22px; height: 46px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">Închide</button>
+    </div>
+  </div>
+</sc-if>
 
 <!-- ===== ORDER TRACKING BAR ===== -->
 <sc-if value="{{ hasTrackOrder }}" hint-placeholder-val="{{ false }}">
@@ -451,7 +490,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false };
+  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false, legalOpen: null };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -782,6 +821,10 @@ class Component extends DCLogic {
       upsells, hasUpsell: upsells.length > 0 && cartCount > 0,
       cartOpen: this.state.cartOpen, openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }),
       upsellOpen: this.state.upsellOpen, closeUpsell: () => this.setState({ upsellOpen: false, upsellSel: {} }), confirmUpsell, upsellCats, upsellProducts,
+      legalOpen: !!this.state.legalOpen, closeLegal: () => this.setState({ legalOpen: null }), stopProp: (e) => e.stopPropagation(),
+      isTerms: this.state.legalOpen === 'terms', isPrivacy: this.state.legalOpen === 'privacy', isCookies: this.state.legalOpen === 'cookies', isAnpc: this.state.legalOpen === 'anpc',
+      legalTitle: ({ terms: 'Termeni și condiții', privacy: 'Confidențialitate (GDPR)', cookies: 'Politica cookie-uri', anpc: 'ANPC / Soluționare litigii' })[this.state.legalOpen] || '',
+      openTerms: () => this.setState({ legalOpen: 'terms' }), openPrivacy: () => this.setState({ legalOpen: 'privacy' }), openCookies: () => this.setState({ legalOpen: 'cookies' }), openAnpc: () => this.setState({ legalOpen: 'anpc' }),
       setDelivery: () => this.setState({ mode: 'delivery' }), setPickup: () => this.setState({ mode: 'pickup' }),
       deliveryBtnStyle: seg(isDelivery), pickupBtnStyle: seg(!isDelivery),
       setZone1: () => this.setState({ zone: 1 }), setZone2: () => this.setState({ zone: 2 }),
