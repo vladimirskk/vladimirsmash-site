@@ -564,18 +564,21 @@ class Component extends DCLogic {
     const el = this.productsRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const targetY = window.scrollY + rect.top - 88;
-    if (rect.top < 0 || rect.top > 140) window.scrollTo({ top: targetY, behavior: 'smooth' });
+    if (rect.top < 0 || rect.top > 140) this.scrollBy(rect.top - 88);
   }
 
   scrollToMenu(e) {
     e.preventDefault();
     const el = document.getElementById('meniu');
     if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const scroller = [document.body, document.documentElement].find(s => s.scrollHeight > s.clientHeight + 10);
-    if (scroller) scroller.scrollTo({ top: scroller.scrollTop + rect.top - 60, behavior: 'smooth' });
-    else window.scrollTo({ top: window.scrollY + rect.top - 60, behavior: 'smooth' });
+    this.scrollBy(el.getBoundingClientRect().top - 60);
+  }
+
+  scrollBy(deltaFromTop) {
+    const bodyStyle = getComputedStyle(document.body);
+    const bodyScrolls = (bodyStyle.overflowY === 'auto' || bodyStyle.overflowY === 'scroll') && document.body.scrollHeight > document.body.clientHeight + 10;
+    if (bodyScrolls) document.body.scrollTo({ top: document.body.scrollTop + deltaFromTop, behavior: 'smooth' });
+    else window.scrollTo({ top: window.scrollY + deltaFromTop, behavior: 'smooth' });
   }
 
   onTouchStart(e) { this.touchX = e.touches[0].clientX; }
