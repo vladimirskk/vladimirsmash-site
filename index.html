@@ -98,7 +98,7 @@
   </div>
   <div style="position: sticky; top: 74px; z-index: 40; padding: 12px clamp(20px, 5vw, 72px); background: #fbfbfa; border-bottom: 1px solid rgba(11,10,10,.08);">
     <div style="position: relative;">
-      <div ref="{{ catRowRef }}" onTouchStart="{{ onTouchStart }}" onTouchEnd="{{ onTouchEnd }}" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;">
+      <div ref="{{ catRowRef }}" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;">
         <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
           <button onClick="{{ c.select }}" style-hover="border-color: #0017c0; color: #0017c0;" style="{{ c.style }}">{{ c.label }}</button>
         </sc-for>
@@ -572,8 +572,10 @@ class Component extends DCLogic {
     e.preventDefault();
     const el = document.getElementById('meniu');
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 60;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    const rect = el.getBoundingClientRect();
+    const scroller = [document.body, document.documentElement].find(s => s.scrollHeight > s.clientHeight + 10);
+    if (scroller) scroller.scrollTo({ top: scroller.scrollTop + rect.top - 60, behavior: 'smooth' });
+    else window.scrollTo({ top: window.scrollY + rect.top - 60, behavior: 'smooth' });
   }
 
   onTouchStart(e) { this.touchX = e.touches[0].clientX; }
@@ -811,7 +813,7 @@ class Component extends DCLogic {
       t, heroImg: this.state.heroImg, hasHeroImg: !!this.state.heroImg, noHeroImg: !this.state.heroImg,
       aboutImg: this.state.aboutImg, hasAboutImg: !!this.state.aboutImg, noAboutImg: !this.state.aboutImg,
       productsRef: this.productsRef, onTouchStart: (e) => this.onTouchStart(e), onTouchEnd: (e) => this.onTouchEnd(e), scrollToMenu: (e) => this.scrollToMenu(e),
-      cats: catsData.map(c => ({ label: c.name, style: pill(c.id === cat), select: () => this.setState({ cat: c.id }) })),
+      cats: catsData.map(c => ({ label: c.name, style: pill(c.id === cat), select: () => this.setState({ cat: c.id }, () => this.scrollProductsToTop()) })),
       catBlurb: '', products, reviews: this.reviews().map(r => ({ ...r, initial: r.name.charAt(0) })),
       showOutgoing, outgoingStyle, prevProducts,
       custName: this.state.custName, custPhone: this.state.custPhone, custAddress: this.state.custAddress,
