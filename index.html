@@ -564,7 +564,7 @@ class Component extends DCLogic {
     const el = this.productsRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < 0 || rect.top > 140) this.scrollBy(rect.top - 88);
+    if (rect.top < 0 || rect.top > 140) this.scrollBy(rect.top - 148);
   }
 
   scrollToMenu(e) {
