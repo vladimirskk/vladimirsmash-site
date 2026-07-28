@@ -6,7 +6,7 @@
 <title>Vladimir Smash — Smash Burgeri Autentici Americani în Baia Mare | Comandă Online</title>
 <meta name="description" content="Smash burgeri autentici americani în Baia Mare — chifle Martin's, carne de vită proaspătă (niciodată congelată), cartofi proaspăt tăiați. Comandă online cu livrare sau ridicare.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://vladimirsmash-site.vercel.app/">
+<link rel="canonical" href="https://vldimirsmash.ro/">
 <link rel="icon" href="assets/logo-dark.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0017c0">
 <meta property="og:type" content="restaurant.menu">
@@ -14,7 +14,7 @@
 <meta property="og:description" content="Chifle Martin's din SUA, carne de vită proaspătă, cartofi proaspăt tăiați. Comandă online, livrare sau ridicare din Baia Mare.">
 <meta property="og:image" content="assets/hero.png">
 <meta property="og:locale" content="ro_RO">
-<meta property="og:url" content="https://vladimirsmash-site.vercel.app/">
+<meta property="og:url" content="https://vldimirsmash.ro/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vladimir Smash — Smash Burgeri Autentici Americani">
 <meta name="twitter:description" content="Comandă online smash burgeri autentici americani în Baia Mare — livrare sau ridicare.">
@@ -39,10 +39,10 @@
     "opens": "11:00",
     "closes": "22:00"
   },
-  "image": "https://vladimirsmash-site.vercel.app/assets/hero.png",
-  "url": "https://vladimirsmash-site.vercel.app/",
+  "image": "https://vldimirsmash.ro/assets/hero.png",
+  "url": "https://vldimirsmash.ro/",
   "acceptsReservations": "False",
-  "menu": "https://vladimirsmash-site.vercel.app/#meniu"
+  "menu": "https://vldimirsmash.ro/#meniu"
 }
 </script>
 <script src="./support.js"></script>
@@ -303,6 +303,25 @@
   </div>
 </section>
 
+<!-- ===== BLOG ===== -->
+<section id="blog" data-screen-label="Blog" style="padding: 0 clamp(20px, 5vw, 72px) clamp(56px, 9vh, 100px); scroll-margin-top: 60px;">
+  <sc-if value="{{ blogListView }}" hint-placeholder-val="{{ true }}">
+    <div style="font: 800 13px 'Archivo', sans-serif; letter-spacing: .24em; text-transform: uppercase; color: #0017c0;">JURNAL</div>
+    <h2 style="margin: 10px 0 0; font: 900 clamp(34px, 5vw, 64px)/1 'Archivo', sans-serif; letter-spacing: -.02em; text-transform: uppercase;">Blog Vladimir Smash</h2>
+    <div style="height: 2px; background: #0017c0; margin: 22px 0 26px;"></div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px;">
+      <sc-for list="{{ posts }}" as="post" hint-placeholder-count="5">
+        <a href="blog/{{ post.slug }}.html" style-hover="border-color: #0017c0;" style="text-align: left; background: none; border: 1px solid rgba(11,10,10,.15); border-radius: 24px; padding: 24px; cursor: pointer; display: flex; flex-direction: column; gap: 10px; color: #0b0a0a; text-decoration: none;">
+          <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #0017c0;">{{ post.date }}</div>
+          <div style="font: 800 19px/1.25 'Archivo', sans-serif; text-transform: uppercase;">{{ post.title }}</div>
+          <div style="font: 400 14px/1.6 'Archivo', sans-serif; color: rgba(11,10,10,.6);">{{ post.excerpt }}</div>
+          <div style="font: 700 13px 'Archivo', sans-serif; color: #0017c0; margin-top: 6px;">Citește articolul →</div>
+        </a>
+      </sc-for>
+    </div>
+  </sc-if>
+</section>
+
 <!-- ===== FOOTER ===== -->
 <footer style="background: #0017c0; color: #fff; padding: clamp(44px, 7vh, 72px) clamp(20px, 5vw, 72px) 110px;">
   <img src="assets/logo-white.svg" alt="VLADIMIR SMASH" style="width: clamp(130px, 16vw, 200px); display: block;">
@@ -322,6 +341,7 @@
         <a href="#meniu" style="color: #fff;">{{ t.orderTitle }}</a>
         <a href="#despre" style="color: #fff;">{{ t.aboutTitle }}</a>
         <a href="#livrare" style="color: #fff;">{{ t.mapTitle }}</a>
+        <a href="#blog" style="color: #fff;">Blog</a>
       </div>
     </div>
     <div>
@@ -336,7 +356,7 @@
   </div>
   <div style="height: 2px; background: rgba(255,255,255,.3); margin: 28px 0;"></div>
   <div style="font: 400 12px/1.7 'Archivo', sans-serif; color: rgba(255,255,255,.55); max-width: 640px;">
-    <strong style="color: rgba(255,255,255,.8);">[Denumire firmă] S.R.L.</strong> · CUI [de completat] · Nr. Reg. Com. [de completat] · Sediu: [de completat] · Operator date cu caracter personal conform Regulamentului (UE) 2016/679.
+    <strong style="color: rgba(255,255,255,.8);">PFA Andor V. Angela Helene</strong> · CUI 43966957 · F24/247/23.03.2021 · Sediu: Vasile Alecsandri 15, Baia Mare · Operator date cu caracter personal conform Regulamentului (UE) 2016/679.
   </div>
   <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.65);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
 </footer>
@@ -356,7 +376,7 @@
       </sc-if>
       <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Operator de date: <strong>[Denumire firmă] S.R.L.</strong>, CUI [de completat], sediu [de completat].</p>
+          <p>Operator de date: <strong>PFA Andor V. Angela Helene</strong>, CUI 43966957, F24/247/23.03.2021, sediu Vasile Alecsandri 15, Baia Mare.</p>
           <p>Colectăm numele, numărul de telefon și adresa de livrare exclusiv pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).</p>
           <p>Nu vindem și nu cedăm datele tale unor terți în scop de marketing. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.</p>
           <p>Ai dreptul de acces, rectificare, ștergere și opoziție cu privire la datele tale — ne poți scrie la adresa de e-mail din secțiunea de contact. Te poți adresa și Autorității Naționale de Supraveghere a Prelucrării Datelor cu Caracter Personal (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener" style="color: #0017c0;">dataprotection.ro</a>).</p>
@@ -616,6 +636,12 @@ class Component extends DCLogic {
     this.scrollBy(el.getBoundingClientRect().top - 60);
   }
 
+  scrollToBlogTop() {
+    const el = document.getElementById('blog');
+    if (!el) return;
+    this.scrollBy(el.getBoundingClientRect().top - 20);
+  }
+
   scrollBy(deltaFromTop) {
     const bodyStyle = getComputedStyle(document.body);
     const bodyScrolls = (bodyStyle.overflowY === 'auto' || bodyStyle.overflowY === 'scroll') && document.body.scrollHeight > document.body.clientHeight + 10;
@@ -677,6 +703,42 @@ class Component extends DCLogic {
     return [
       { id: 'smash', name: 'Smash Burger' }, { id: 'maxi', name: 'Maxi Smash' },
       { id: 'legends', name: 'Our Legends' }, { id: 'fries', name: 'Fries' }, { id: 'drinks', name: 'Drinks' }
+    ];
+  }
+
+  postsData() {
+    return [
+      { slug: 'ce-este-smash-burger', date: '12 Iulie 2026', title: 'Ce este un smash burger și prin ce diferă de un burger clasic', excerpt: 'De ce carnea presată pe grill la temperatură mare dă cea mai bună crustă caramelizată din Baia Mare.', paragraphs: [
+        'Un smash burger se face din carne de vită proaspătă, formată în bilă și presată ("smash") direct pe plita încinsă. Presarea creează contact maxim între carne și suprafața fierbinte, ceea ce produce o crustă caramelizată (reacția Maillard) pe care un burger clasic, gătit gros, nu o poate obține.',
+        'La Vladimir Smash folosim carne de vită proaspătă, niciodată congelată, presată în același moment în care intră pe plită. Rezultatul: margini crocante, interior suculent și un gust intens de carne prăjită, nu doar fiartă.',
+        'Diferența se simte mai ales în textură — un burger clasic e gros și moale, un smash burger e subțire, crocant la exterior, suculent în interior, cu straturi multiple de carne și brânză topită.',
+        'Dacă ești în Baia Mare sau Maramureș și vrei să încerci un smash burger autentic american, poți comanda online direct din meniul nostru.'
+      ]},
+      { slug: 'carne-proaspata-vs-congelata', date: '15 Iulie 2026', title: 'De ce folosim carne proaspătă, niciodată congelată', excerpt: 'Diferența de gust și textură dintre carnea proaspătă și cea congelată la burgeri.', paragraphs: [
+        'Carnea de vită proaspătă își păstrează sucurile naturale, ceea ce înseamnă un burger mai suculent și cu gust mai intens de carne. Congelarea rupe fibrele musculare și pierde din suculență la decongelare.',
+        'La Vladimir Smash, carnea de vită pentru burgeri ajunge proaspătă, niciodată congelată, și este preparată în aceeași zi. Asta se traduce direct în textura crustei de la smash și în suculența din interior.',
+        'E un detaliu care pare mic, dar face diferența dintre un burger obișnuit și unul memorabil — și e unul dintre motivele pentru care clienții din Baia Mare aleg smash burgerii noștri.'
+      ]},
+      { slug: 'cartofi-pai-proaspat-taiati', date: '18 Iulie 2026', title: 'Cartofi pai proaspăt tăiați — de ce contează', excerpt: 'Diferența dintre cartofii proaspăt tăiați și cei congelați, pre-procesați.', paragraphs: [
+        'Cartofii pai proaspăt tăiați păstrează mai mult din textura naturală a cartofului — crocanți la exterior, pufoși la interior. Cartofii congelați, pre-procesați industrial, pierd din această textură și au adesea un gust mai uniform, "de fabrică".',
+        'La Vladimir Smash tăiem cartofii proaspăt, aproape de momentul preparării, pentru un cartof pai care completează perfect un smash burger — nu doar o garnitură, ci parte din experiență.',
+        'Combinația de cartofi pai proaspeți cu un smash burger cu carne proaspătă și chiflă Martin\u2019s e ceea ce căutăm să oferim la fiecare comandă, fie că e livrare sau ridicare din Baia Mare.'
+      ]},
+      { slug: 'chifle-martins-burgeri-americani', date: '21 Iulie 2026', title: 'Chiflele Martin\u2019s — ce le face speciale pentru burgeri americani', excerpt: 'De ce chifla contează la fel de mult ca și carnea într-un burger american autentic.', paragraphs: [
+        'Chiflele Martin\u2019s sunt un standard în lumea burgerilor americani autentici — moi, ușor dulci, suficient de rezistente cât să țină sucurile burgerului fără să se destrame.',
+        'Textura lor pufoasă, dar densă, face diferența față de o chiflă obișnuită de supermarket, care se înmoaie rapid și rupe echilibrul burgerului.',
+        'La Vladimir Smash folosim chifle Martin\u2019s pentru fiecare burger din meniu, pentru că un smash burger bun se construiește din fiecare ingredient, nu doar din carne.'
+      ]},
+      { slug: 'aripioare-de-pui-crocante', date: '24 Iulie 2026', title: 'Aripioarele de pui crocante — completarea perfectă pentru o comandă de burgeri', excerpt: 'Ghid rapid despre aripioarele noastre de pui, gătite crocant, alături de smash burgeri.', paragraphs: [
+        'Aripioarele de pui sunt alegerea perfectă alături de un smash burger — crocante la exterior, fragede în interior, gata în câteva minute de la comandă.',
+        'Le gătim până ajung crocante și le servim cu sosurile din meniu, pentru cei care vor să completeze comanda cu ceva pe lângă burger.',
+        'Sunt disponibile la comandă online, alături de burgeri și cartofi pai, cu livrare sau ridicare din Baia Mare.'
+      ]},
+      { slug: 'livrare-burgeri-baia-mare-maramures', date: '26 Iulie 2026', title: 'Livrare de burgeri în Baia Mare și Maramureș — zone acoperite', excerpt: 'Cum funcționează livrarea comenzilor de smash burgeri în Baia Mare.', paragraphs: [
+        'Comenzile online de smash burgeri de la Vladimir Smash pot fi livrate în Baia Mare, cu zone și taxe de livrare afișate direct pe site la finalizarea comenzii.',
+        'Poți alege și ridicare personală din locația noastră de pe Vasile Alecsandri 15, Baia Mare, dacă vrei burgerii cât mai repede, calzi, direct de la plită.',
+        'Pentru clienții din Maramureș care nu sunt în zona de livrare, ridicarea rămâne cea mai rapidă opțiune — comanda se pregătește la momentul ridicării.'
+      ]}
     ];
   }
 
@@ -874,6 +936,7 @@ class Component extends DCLogic {
       upsellOpen: this.state.upsellOpen, closeUpsell: () => this.setState({ upsellOpen: false, upsellSel: {} }), confirmUpsell, upsellCats, upsellProducts,
       legalOpen: !!this.state.legalOpen, closeLegal: () => this.setState({ legalOpen: null }), stopProp: (e) => e.stopPropagation(),
       isTerms: this.state.legalOpen === 'terms', isPrivacy: this.state.legalOpen === 'privacy', isCookies: this.state.legalOpen === 'cookies', isAnpc: this.state.legalOpen === 'anpc',
+      posts: this.postsData(), blogListView: true,
       legalTitle: ({ terms: 'Termeni și condiții', privacy: 'Confidențialitate (GDPR)', cookies: 'Politica cookie-uri', anpc: 'ANPC / Soluționare litigii' })[this.state.legalOpen] || '',
       openTerms: () => this.setState({ legalOpen: 'terms' }), openPrivacy: () => this.setState({ legalOpen: 'privacy' }), openCookies: () => this.setState({ legalOpen: 'cookies' }), openAnpc: () => this.setState({ legalOpen: 'anpc' }),
       setDelivery: () => this.setState({ mode: 'delivery' }), setPickup: () => this.setState({ mode: 'pickup' }),
