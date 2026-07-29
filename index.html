@@ -575,6 +575,8 @@ class Component extends DCLogic {
   touchX = 0;
 
   componentDidMount() {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (!window.location.hash || window.location.hash === '#top') window.scrollTo(0, 0);
     setTimeout(() => {
       const el = this.catRowRef.current;
       if (!el) return;
