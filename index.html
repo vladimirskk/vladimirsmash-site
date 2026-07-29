@@ -6,7 +6,7 @@
 <title>Vladimir Smash — Smash Burgeri Autentici Americani în Baia Mare | Comandă Online</title>
 <meta name="description" content="Smash burgeri autentici americani în Baia Mare — chifle Martin's, carne de vită proaspătă (niciodată congelată), cartofi proaspăt tăiați. Comandă online cu livrare sau ridicare.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://vldimirsmash.ro/">
+<link rel="canonical" href="https://vladimirsmash.ro/">
 <link rel="icon" href="assets/logo-dark.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0017c0">
 <meta property="og:type" content="restaurant.menu">
@@ -14,7 +14,7 @@
 <meta property="og:description" content="Chifle Martin's din SUA, carne de vită proaspătă, cartofi proaspăt tăiați. Comandă online, livrare sau ridicare din Baia Mare.">
 <meta property="og:image" content="assets/hero.png">
 <meta property="og:locale" content="ro_RO">
-<meta property="og:url" content="https://vldimirsmash.ro/">
+<meta property="og:url" content="https://vladimirsmash.ro/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vladimir Smash — Smash Burgeri Autentici Americani">
 <meta name="twitter:description" content="Comandă online smash burgeri autentici americani în Baia Mare — livrare sau ridicare.">
@@ -39,10 +39,10 @@
     "opens": "11:00",
     "closes": "22:00"
   },
-  "image": "https://vldimirsmash.ro/assets/hero.png",
-  "url": "https://vldimirsmash.ro/",
+  "image": "https://vladimirsmash.ro/assets/hero.png",
+  "url": "https://vladimirsmash.ro/",
   "acceptsReservations": "False",
-  "menu": "https://vldimirsmash.ro/#meniu"
+  "menu": "https://vladimirsmash.ro/#meniu"
 }
 </script>
 <script src="./support.js"></script>
@@ -152,7 +152,7 @@
   </div>
   <div style="position: sticky; top: 74px; z-index: 40; padding: 12px clamp(20px, 5vw, 72px); background: #fbfbfa; border-bottom: 1px solid rgba(11,10,10,.08);">
     <div style="position: relative;">
-      <div ref="{{ catRowRef }}" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;">
+      <div ref="{{ catRowRef }}" style="display: flex; flex-wrap: wrap; gap: 8px; touch-action: pan-y;">
         <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
           <button onClick="{{ c.select }}" style-hover="border-color: #0017c0; color: #0017c0;" style="{{ c.style }}">{{ c.label }}</button>
         </sc-for>
@@ -596,12 +596,6 @@ class Component extends DCLogic {
   componentDidMount() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (!window.location.hash || window.location.hash === '#top') window.scrollTo(0, 0);
-    setTimeout(() => {
-      const el = this.catRowRef.current;
-      if (!el) return;
-      el.scrollTo({ left: 90, behavior: 'smooth' });
-      setTimeout(() => el.scrollTo({ left: 0, behavior: 'smooth' }), 550);
-    }, 700);
     this.loadSupabase();
   }
 
