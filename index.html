@@ -622,7 +622,11 @@ class Component extends DCLogic {
     sb.channel('pos_store_sync')
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pos_store', filter: 'restaurant_id=eq.vladimirsmash' }, (payload) => {
         const row = payload.new;
-        if (row.store_key === 'pos_cats') this.setState({ liveCats: row.value });
+        if (row.store_key === 'pos_cats') this.setState(s => {
+          const activeCats = row.value.filter(c => c.active !== false);
+          const stillActive = activeCats.some(c => c.id === s.cat);
+          return { liveCats: row.value, cat: stillActive ? s.cat : (activeCats[0] && activeCats[0].id) };
+        });
         if (row.store_key === 'pos_products') this.setState({ liveProducts: row.value });
         if (row.store_key === 'site_hero_image' && row.value !== this.state.heroImg) { localStorage.setItem('vs_heroImg', row.value); this.setState({ heroImg: row.value }); }
         if (row.store_key === 'site_about_image' && row.value !== this.state.aboutImg) { localStorage.setItem('vs_aboutImg', row.value); this.setState({ aboutImg: row.value }); }
@@ -748,7 +752,8 @@ class Component extends DCLogic {
 
   menu() {
     if (!this.state.liveProducts) return this.fallbackMenu();
-    return this.state.liveProducts.filter(p => p.available !== false).map(p => ({
+    const activeCatIds = (this.state.liveCats || []).filter(c => c.active !== false).map(c => c.id);
+    return this.state.liveProducts.filter(p => p.available !== false && (!this.state.liveCats || activeCatIds.includes(p.cat))).map(p => ({
       id: String(p.id), cat: p.cat, name: p.name, price: p.price,
       desc: p.desc || '', img: p.img || null,
       allergens: p.allergens ? p.allergens.split(',').map(a => a.trim()).filter(Boolean) : null
@@ -756,7 +761,7 @@ class Component extends DCLogic {
   }
 
   cats() {
-    if (this.state.liveCats) return this.state.liveCats.map(c => ({ id: c.id, name: c.name }));
+    if (this.state.liveCats) return this.state.liveCats.filter(c => c.active !== false).map(c => ({ id: c.id, name: c.name }));
     return [
       { id: 'smash', name: 'Smash Burger' }, { id: 'maxi', name: 'Maxi Smash' },
       { id: 'legends', name: 'Our Legends' }, { id: 'fries', name: 'Fries' }, { id: 'drinks', name: 'Drinks' }
