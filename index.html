@@ -653,10 +653,10 @@ class Component extends DCLogic {
   scrollProductsToTop() {
     const el = this.productsRef.current;
     if (!el) return;
-    const rect = el.getBoundingClientRect();
     const barEl = this.catRowRef.current ? this.catRowRef.current.closest('[style*="position: sticky"]') : null;
     const barBottom = barEl ? barEl.getBoundingClientRect().bottom : 148;
-    if (rect.top < barBottom - 8 || rect.top > barBottom + 140) this.scrollBy(rect.top - barBottom - 8);
+    const rect = el.getBoundingClientRect();
+    if (Math.abs(rect.top - barBottom) > 4) this.scrollBy(rect.top - barBottom);
   }
 
   scrollToMenu(e) {
