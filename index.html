@@ -553,7 +553,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false, legalOpen: null };
+  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false, legalOpen: null, heroImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_heroImg')) || null, aboutImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_aboutImg')) || null };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -590,15 +590,17 @@ class Component extends DCLogic {
     const products = data.find(d => d.store_key === 'pos_products')?.value || [];
     const heroImg = data.find(d => d.store_key === 'site_hero_image')?.value || null;
     const aboutImg = data.find(d => d.store_key === 'site_about_image')?.value || null;
-    this.setState(s => ({ liveCats: cats, liveProducts: products, heroImg, aboutImg, cat: s.cat || (cats[0] && cats[0].id) }));
+    if (heroImg) localStorage.setItem('vs_heroImg', heroImg);
+    if (aboutImg) localStorage.setItem('vs_aboutImg', aboutImg);
+    this.setState(s => ({ liveCats: cats, liveProducts: products, heroImg: heroImg || s.heroImg, aboutImg: aboutImg || s.aboutImg, cat: s.cat || (cats[0] && cats[0].id) }));
 
     sb.channel('pos_store_sync')
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pos_store', filter: 'restaurant_id=eq.vladimirsmash' }, (payload) => {
         const row = payload.new;
         if (row.store_key === 'pos_cats') this.setState({ liveCats: row.value });
         if (row.store_key === 'pos_products') this.setState({ liveProducts: row.value });
-        if (row.store_key === 'site_hero_image') this.setState({ heroImg: row.value });
-        if (row.store_key === 'site_about_image') this.setState({ aboutImg: row.value });
+        if (row.store_key === 'site_hero_image') { localStorage.setItem('vs_heroImg', row.value); this.setState({ heroImg: row.value }); }
+        if (row.store_key === 'site_about_image') { localStorage.setItem('vs_aboutImg', row.value); this.setState({ aboutImg: row.value }); }
       })
       .subscribe();
   }
