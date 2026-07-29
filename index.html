@@ -702,10 +702,8 @@ class Component extends DCLogic {
   }
 
   scrollBy(deltaFromTop) {
-    const bodyStyle = getComputedStyle(document.body);
-    const bodyScrolls = (bodyStyle.overflowY === 'auto' || bodyStyle.overflowY === 'scroll') && document.body.scrollHeight > document.body.clientHeight + 10;
-    if (bodyScrolls) document.body.scrollTo({ top: document.body.scrollTop + deltaFromTop, behavior: 'smooth' });
-    else window.scrollTo({ top: window.scrollY + deltaFromTop, behavior: 'smooth' });
+    const scroller = document.scrollingElement || document.documentElement;
+    scroller.scrollTo({ top: scroller.scrollTop + deltaFromTop, behavior: 'smooth' });
   }
 
   onTouchStart(e) { this.touchX = e.touches[0].clientX; }
