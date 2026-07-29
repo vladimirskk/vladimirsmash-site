@@ -151,15 +151,10 @@
     <div style="height: 2px; background: #0017c0; margin-top: 22px;"></div>
   </div>
   <div style="position: sticky; top: 74px; z-index: 40; padding: 12px clamp(20px, 5vw, 72px); background: #fbfbfa; border-bottom: 1px solid rgba(11,10,10,.08);">
-    <div style="position: relative;">
-      <div ref="{{ catRowRef }}" style="display: flex; flex-wrap: wrap; gap: 8px; touch-action: pan-y;">
-        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
-          <button onClick="{{ c.select }}" style-hover="border-color: #0017c0; color: #0017c0;" style="{{ c.style }}">{{ c.label }}</button>
-        </sc-for>
-      </div>
-      <div style="position: absolute; top: 0; right: 0; bottom: 0; width: 56px; pointer-events: none; background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,.95)); display: flex; align-items: center; justify-content: flex-end;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0017c0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="animation: vs-nudgex 1.4s ease-in-out infinite; margin-right: 4px;"><path d="m9 6 6 6-6 6"></path></svg>
-      </div>
+    <div ref="{{ catRowRef }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; touch-action: pan-y;">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+        <button onClick="{{ c.select }}" style-hover="border-color: #0017c0; color: #0017c0;" style="{{ c.style }}">{{ c.label }}</button>
+      </sc-for>
     </div>
   </div>
   <div ref="{{ productsRef }}" style="padding: 8px clamp(20px, 5vw, 72px) 0; touch-action: pan-y; position: relative; overflow: hidden;">
@@ -914,7 +909,7 @@ class Component extends DCLogic {
     const catIds = catsData.map(c => c.id);
     const burgerCatIds = ['cat1779959468606', 'cat1779960481264', 'cat1779962224597'];
     const zone1Fee = 10, zone2Fee = 25, minOrder = 30;
-    const pill = (on) => 'flex: none; border: 1.5px solid ' + (on ? '#0017c0' : 'rgba(11,10,10,.2)') + '; background: ' + (on ? '#0017c0' : '#fff') + '; color: ' + (on ? '#fff' : '#0b0a0a') + '; cursor: pointer; font: 800 13.5px Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 11px 20px; border-radius: 999px; transition: all .18s ease; white-space: nowrap;';
+    const pill = (on) => 'border: 1.5px solid ' + (on ? '#0017c0' : 'rgba(11,10,10,.2)') + '; background: ' + (on ? '#0017c0' : '#fff') + '; color: ' + (on ? '#fff' : '#0b0a0a') + '; cursor: pointer; font: 800 13.5px Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 11px 14px; border-radius: 999px; transition: all .18s ease; white-space: nowrap; text-align: center;';
     const seg = (on) => 'flex: 1; border: none; cursor: pointer; border-radius: 999px; padding: 10px 6px; font: 800 13px Archivo, sans-serif; letter-spacing: .05em; text-transform: uppercase; transition: all .15s ease; background: ' + (on ? '#0017c0' : 'transparent') + '; color: ' + (on ? '#fff' : 'rgba(11,10,10,.6)') + ';';
     const langSeg = (on) => 'border: none; cursor: pointer; border-radius: 999px; padding: 7px 12px; font: 800 12px Archivo, sans-serif; background: ' + (on ? '#fff' : 'transparent') + '; color: ' + (on ? '#0017c0' : 'rgba(255,255,255,.8)') + ';';
     const zoneBtn = (on) => 'flex: 1; cursor: pointer; border-radius: 999px; padding: 10px 6px; font: 700 12.5px Archivo, sans-serif; white-space: nowrap; transition: all .15s ease; border: 1.5px solid ' + (on ? '#0017c0' : 'rgba(11,10,10,.2)') + '; background: ' + (on ? 'rgba(0,23,192,.08)' : '#fff') + '; color: ' + (on ? '#0017c0' : 'rgba(11,10,10,.65)') + ';';
