@@ -625,8 +625,8 @@ class Component extends DCLogic {
         const row = payload.new;
         if (row.store_key === 'pos_cats') this.setState({ liveCats: row.value });
         if (row.store_key === 'pos_products') this.setState({ liveProducts: row.value });
-        if (row.store_key === 'site_hero_image') { localStorage.setItem('vs_heroImg', row.value); this.setState({ heroImg: row.value }); }
-        if (row.store_key === 'site_about_image') { localStorage.setItem('vs_aboutImg', row.value); this.setState({ aboutImg: row.value }); }
+        if (row.store_key === 'site_hero_image' && row.value !== this.state.heroImg) { localStorage.setItem('vs_heroImg', row.value); this.setState({ heroImg: row.value }); }
+        if (row.store_key === 'site_about_image' && row.value !== this.state.aboutImg) { localStorage.setItem('vs_aboutImg', row.value); this.setState({ aboutImg: row.value }); }
       })
       .subscribe();
   }
@@ -654,7 +654,9 @@ class Component extends DCLogic {
     const el = this.productsRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < 0 || rect.top > 140) this.scrollBy(rect.top - 148);
+    const barEl = this.catRowRef.current ? this.catRowRef.current.closest('[style*="position: sticky"]') : null;
+    const barBottom = barEl ? barEl.getBoundingClientRect().bottom : 148;
+    if (rect.top < barBottom - 8 || rect.top > barBottom + 140) this.scrollBy(rect.top - barBottom - 8);
   }
 
   scrollToMenu(e) {
