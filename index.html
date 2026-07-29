@@ -702,7 +702,8 @@ class Component extends DCLogic {
   }
 
   scrollBy(deltaFromTop) {
-    const scroller = document.scrollingElement || document.documentElement;
+    let scroller = document.scrollingElement || document.documentElement;
+    if (scroller.scrollHeight <= scroller.clientHeight + 5) scroller = document.body;
     scroller.scrollTo({ top: scroller.scrollTop + deltaFromTop, behavior: 'smooth' });
   }
 
