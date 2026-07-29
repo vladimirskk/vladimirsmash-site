@@ -411,6 +411,22 @@
   </div>
 </sc-if>
 
+<!-- ===== OTP MODAL ===== -->
+<sc-if value="{{ otpModalOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; inset: 0; z-index: 130; background: rgba(11,10,10,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 20px;" onClick="{{ closeOtp }}">
+    <div style="background: rgba(255,255,255,.96); backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,.9); border-radius: 28px; padding: 32px 28px; max-width: 380px; width: 100%; box-shadow: 0 40px 100px rgba(11,10,10,.35); animation: vs-pop .3s cubic-bezier(.2,.9,.3,1.2) both;" onClick="{{ stopProp }}">
+      <h3 style="margin: 0 0 8px; font: 900 20px/1.15 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: #0017c0;">Confirmă comanda</h3>
+      <p style="margin: 0 0 20px; font: 500 14px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.65);">Ți-am trimis un cod de 4 cifre prin SMS la {{ otpPhoneLbl }}.</p>
+      <input value="{{ otpCode }}" onChange="{{ setOtpCode }}" placeholder="Cod SMS" inputmode="numeric" style="width: 100%; height: 52px; border-radius: 14px; border: 1.5px solid rgba(11,10,10,.2); padding: 0 16px; font: 800 22px 'Archivo', sans-serif; letter-spacing: .3em; text-align: center; outline: none; box-sizing: border-box;">
+      <sc-if value="{{ otpError }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top: 10px; color: #c0392b; font: 600 13px 'Archivo', sans-serif;">{{ otpError }}</div>
+      </sc-if>
+      <button onClick="{{ verifyOtp }}" disabled="{{ otpVerifying }}" style-hover="background: #0012a0;" style="width: 100%; margin-top: 18px; height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">Confirmă</button>
+      <button onClick="{{ resendOtp }}" style-hover="color: #0017c0;" style="width: 100%; margin-top: 10px; background: none; border: none; cursor: pointer; padding: 8px; font: 700 13px 'Archivo', sans-serif; color: rgba(11,10,10,.55); text-transform: uppercase; letter-spacing: .04em;">Retrimite codul</button>
+    </div>
+  </div>
+</sc-if>
+
 <!-- ===== ORDER TRACKING BAR ===== -->
 <sc-if value="{{ hasTrackOrder }}" hint-placeholder-val="{{ false }}">
   <div style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 75; display: flex; align-items: center; gap: 14px; color: #fff; padding: 14px 18px; border-radius: 999px; box-shadow: 0 16px 44px rgba(11,10,10,.35); font: 700 14px 'Archivo', sans-serif; width: max-content; max-width: calc(100vw - 32px); {{ trackStyle }}">
@@ -500,7 +516,10 @@
         <sc-if value="{{ canPay }}" hint-placeholder-val="{{ true }}">
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <div style="font: 500 12.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.55); text-align: center;">{{ payNoteLbl }}</div>
-            <button onClick="{{ payCash }}" style-hover="background: #0012a0;" style="height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.payCash }}</button>
+            <sc-if value="{{ sendOtpError }}" hint-placeholder-val="{{ false }}">
+              <div style="background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3); color: #c0392b; border-radius: 14px; padding: 10px 14px; font: 600 13px/1.4 'Archivo', sans-serif;">{{ sendOtpError }}</div>
+            </sc-if>
+            <button onClick="{{ payCash }}" disabled="{{ otpSending }}" style-hover="background: #0012a0;" style="height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ payCashLbl }}</button>
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <button disabled style="height: 48px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.15); cursor: not-allowed; background: rgba(11,10,10,.04); color: rgba(11,10,10,.35); font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.payCard }}</button>
               <div style="text-align: center; font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.45);">{{ t.payCardSoon }}</div>
@@ -569,7 +588,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false, legalOpen: null, notes: {}, heroImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_heroImg')) || null, aboutImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_aboutImg')) || null };
+  state = { lang: 'ro', cat: null, cart: {}, cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: '', custPhone: '', custAddress: '', placing: false, legalOpen: null, notes: {}, otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_heroImg')) || null, aboutImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_aboutImg')) || null };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -654,6 +673,35 @@ class Component extends DCLogic {
     const el = document.getElementById('meniu');
     if (!el) return;
     this.scrollBy(el.getBoundingClientRect().top - 60);
+  }
+
+  async sendOtp(method) {
+    const phone = this.state.custPhone.trim();
+    if (!phone) return;
+    if (this.state.phoneVerified && this.state.verifiedPhone === phone) { this.placeOrderPending(method); return; }
+    this.setState({ otpSending: true, otpError: '' });
+    try {
+      const r = await fetch('/api/send-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Eroare');
+      this.setState({ otpModalOpen: true, otpSending: false, otpCode: '', otpError: '', pendingMethod: method });
+    } catch (e) {
+      this.setState({ otpSending: false, otpError: e.message || 'Nu am putut trimite codul SMS' });
+    }
+  }
+
+  async verifyOtp() {
+    const phone = this.state.custPhone.trim();
+    this.setState({ otpVerifying: true, otpError: '' });
+    try {
+      const r = await fetch('/api/verify-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code: this.state.otpCode.trim() }) });
+      const d = await r.json();
+      if (!r.ok || !d.valid) throw new Error(d.error || 'Cod greșit');
+      this.setState({ otpVerifying: false, otpModalOpen: false, phoneVerified: true, verifiedPhone: phone });
+      this.placeOrderPending(this.state.pendingMethod);
+    } catch (e) {
+      this.setState({ otpVerifying: false, otpError: e.message || 'Cod greșit' });
+    }
   }
 
   scrollToBlogTop() {
@@ -937,8 +985,9 @@ class Component extends DCLogic {
       const orderId = 'VS-' + Math.floor(1000 + Math.random() * 9000);
       const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' }; });
       this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total });
-      this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {} });
+      this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '' });
     };
+    this.placeOrderPending = placeOrder;
 
     return {
       t, heroImg: this.state.heroImg, hasHeroImg: !!this.state.heroImg, noHeroImg: !this.state.heroImg,
@@ -970,7 +1019,11 @@ class Component extends DCLogic {
       zone1BtnStyle: zoneBtn(zone === 1), zone2BtnStyle: zoneBtn(zone === 2),
       setRo: () => this.setState({ lang: 'ro' }), setEn: () => this.setState({ lang: 'en' }),
       roBtnStyle: langSeg(lang === 'ro'), enBtnStyle: langSeg(lang === 'en'),
-      payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'), payCash: () => placeOrder('cash'),
+      payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'), payCash: () => this.sendOtp('cash'),
+      otpModalOpen: this.state.otpModalOpen, otpCode: this.state.otpCode, otpSending: this.state.otpSending, otpVerifying: this.state.otpVerifying, otpError: this.state.otpError,
+      sendOtpError: !this.state.otpModalOpen ? this.state.otpError : '', payCashLbl: this.state.otpSending ? 'Se trimite codul…' : t.payCash,
+      setOtpCode: (e) => this.setState({ otpCode: e.target.value.replace(/\D/g, '').slice(0, 4) }), verifyOtp: () => this.verifyOtp(), closeOtp: () => this.setState({ otpModalOpen: false }),
+      resendOtp: () => this.sendOtp(this.state.pendingMethod), otpPhoneLbl: this.state.custPhone,
       ordered: !!this.state.ordered,
       trackOrder: this.state.trackOrder, hasTrackOrder: !!this.state.trackOrder,
       trackText: this.trackText(t), trackStyle: this.trackStyle(),
