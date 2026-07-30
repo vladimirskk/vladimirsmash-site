@@ -258,7 +258,7 @@
           <div style="width: 42px; height: 42px; border-radius: 999px; background: {{ r.color }}; color: #fff; display: grid; place-items: center; font: 800 16px 'Archivo', sans-serif;">{{ r.initial }}</div>
           <div>
             <div style="font: 700 15px 'Archivo', sans-serif;">{{ r.name }}</div>
-            <div style="font: 400 12px 'Archivo', sans-serif; color: rgba(11,10,10,.5);">{{ r.when }}</div>
+            <div style="font: 400 12px 'Archivo', sans-serif; color: rgba(11,10,10,.65);">{{ r.when }}</div>
           </div>
           <div style="margin-left: auto; color: #0017c0; font-size: 14px; letter-spacing: 1px;">★★★★★</div>
         </div>
@@ -268,7 +268,7 @@
   </div>
   <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 24px;">
     <a href="https://www.google.com/maps/search/VLADIMIR+SMASH+Baia+Mare" target="_blank" rel="noopener" style-hover="background: #0017c0; color: #fff;" style="display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid #0017c0; color: #0017c0; font: 800 13px 'Archivo', sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 13px 24px; border-radius: 999px; transition: all .18s ease;">{{ t.revCta }}</a>
-    <span style="font: 400 12.5px 'Archivo', sans-serif; color: rgba(11,10,10,.45);">{{ t.revNote }}</span>
+    <span style="font: 400 12.5px 'Archivo', sans-serif; color: rgba(11,10,10,.62);">{{ t.revNote }}</span>
   </div>
 </section>
 
@@ -341,28 +341,28 @@
     </div>
     <div>
       <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px;">{{ t.ftLinks }}</div>
-      <div style="display: flex; flex-direction: column; gap: 6px; font: 500 15px 'Archivo', sans-serif;">
-        <a href="#meniu" style="color: #fff;">{{ t.orderTitle }}</a>
-        <a href="#despre" style="color: #fff;">{{ t.aboutTitle }}</a>
-        <a href="#livrare" style="color: #fff;">{{ t.mapTitle }}</a>
-        <a href="#blog" style="color: #fff;">Blog</a>
+      <div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px 'Archivo', sans-serif;">
+        <a href="#meniu" style="color: #fff; display: block; padding: 6px 0; min-height: 32px;">{{ t.orderTitle }}</a>
+        <a href="#despre" style="color: #fff; display: block; padding: 6px 0; min-height: 32px;">{{ t.aboutTitle }}</a>
+        <a href="#livrare" style="color: #fff; display: block; padding: 6px 0; min-height: 32px;">{{ t.mapTitle }}</a>
+        <a href="#blog" style="color: #fff; display: block; padding: 6px 0; min-height: 32px;">Blog</a>
       </div>
     </div>
     <div>
       <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px;">Legal</div>
-      <div style="display: flex; flex-direction: column; gap: 6px; font: 500 15px 'Archivo', sans-serif;">
-        <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Termeni și condiții</button>
-        <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Confidențialitate (GDPR)</button>
-        <button onClick="{{ openCookies }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Politica cookie-uri</button>
-        <button onClick="{{ openAnpc }}" style="background: none; border: none; padding: 0; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">ANPC / Soluționare litigii (SOL)</button>
+      <div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px 'Archivo', sans-serif;">
+        <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Termeni și condiții</button>
+        <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Confidențialitate (GDPR)</button>
+        <button onClick="{{ openCookies }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Politica cookie-uri</button>
+        <button onClick="{{ openAnpc }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">ANPC / Soluționare litigii (SOL)</button>
       </div>
     </div>
   </div>
   <div style="height: 2px; background: rgba(255,255,255,.3); margin: 28px 0;"></div>
-  <div style="font: 400 12px/1.7 'Archivo', sans-serif; color: rgba(255,255,255,.55); max-width: 640px;">
+  <div style="font: 400 12px/1.7 'Archivo', sans-serif; color: rgba(255,255,255,.75); max-width: 640px;">
     <strong style="color: rgba(255,255,255,.8);">PFA Andor V. Angela Helene</strong> · CUI 43966957 · F24/247/23.03.2021 · Sediu: Vasile Alecsandri 15, Baia Mare · Operator date cu caracter personal conform Regulamentului (UE) 2016/679.
   </div>
-  <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.65);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
+  <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.8);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
 </footer>
 
 <!-- ===== LEGAL MODAL ===== -->
