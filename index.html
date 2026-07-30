@@ -476,7 +476,6 @@
           </div>
         </div>
       </sc-if>
-    </div>
     <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ false }}">
       <div style="padding: 16px 22px 20px; border-top: 2px solid #0017c0; display: flex; flex-direction: column; gap: 12px; background: rgba(255,255,255,.7);">
         <div style="display: flex; background: rgba(11,10,10,.06); border-radius: 999px; padding: 4px;">
@@ -521,6 +520,7 @@
         </sc-if>
       </div>
     </sc-if>
+  </div>
   </div>
 </sc-if>
 
@@ -936,6 +936,7 @@ class Component extends DCLogic {
     const addToCart = (id, curQty, prodCat) => {
       const c = { ...cart, [id]: curQty + 1 };
       const shouldPrompt = curQty === 0 && burgerCatIds.includes(prodCat) && nonBurgerCats.length > 0;
+      this.persistCart(c, this.state.notes);
       this.setState({ cart: c, upsellOpen: shouldPrompt, upsellCat: nonBurgerCats[0], upsellSel: {} });
     };
 
@@ -981,6 +982,7 @@ class Component extends DCLogic {
       this.setState(s => {
         const c = { ...s.cart };
         Object.keys(s.upsellSel).forEach(id => { c[id] = (c[id] || 0) + s.upsellSel[id]; });
+        this.persistCart(c, s.notes);
         return { cart: c, upsellOpen: false, upsellSel: {} };
       });
     };
