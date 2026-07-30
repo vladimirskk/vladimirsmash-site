@@ -955,8 +955,9 @@ class Component extends DCLogic {
 
     const cartItems = Object.keys(cart).map(id => {
       const p = menu.find(m => m.id === id), qty = cart[id];
+      if (!p) return null;
       return { name: p.name, qty, lineLbl: qty + ' × ' + this.ron(p.price) + '  =  ' + this.ron(qty * p.price), inc: () => setQty(id, qty + 1), dec: () => setQty(id, qty - 1), note: this.state.notes[id] || '', setNote: (e) => this.setState(s => { const notes = { ...s.notes, [id]: e.target.value }; this.persistCart(s.cart, notes); return { notes }; }) };
-    });
+    }).filter(Boolean);
     const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
     const subtotal = Object.keys(cart).reduce((a, id) => a + (menu.find(m => m.id === id).price * cart[id]), 0);
     const isDelivery = mode === 'delivery';
