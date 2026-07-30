@@ -581,13 +581,16 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_custName')) || '', custPhone: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_custPhone')) || '', custAddress: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_custAddress')) || '', placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_heroImg')) || null, aboutImg: (typeof localStorage !== 'undefined' && localStorage.getItem('vs_aboutImg')) || null };
+  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
 
   loadCart() {
     try { return JSON.parse(localStorage.getItem('vs_cart') || '{}'); } catch (e) { return {}; }
+  }
+  ls(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
   }
   loadNotes() {
     try { return JSON.parse(localStorage.getItem('vs_notes') || '{}'); } catch (e) { return {}; }
