@@ -453,7 +453,7 @@
           <div style="flex: 1; min-width: 0;">
             <div style="font: 800 14px 'Archivo', sans-serif; text-transform: uppercase;">{{ it.name }}</div>
             <div style="font: 500 13px 'Archivo', sans-serif; color: #0017c0;">{{ it.lineLbl }}</div>
-            <input value="{{ it.note }}" onChange="{{ it.setNote }}" placeholder="{{ t.noteHint }}" style="margin-top: 6px; width: 100%; height: 32px; border-radius: 9px; border: 1px solid rgba(11,10,10,.15); padding: 0 10px; font: 500 12.5px 'Archivo', sans-serif; outline: none; box-sizing: border-box;">
+            <input value="{{ it.note }}" onChange="{{ it.setNote }}" placeholder="{{ t.noteHint }}" style="margin-top: 6px; width: 100%; height: 32px; border-radius: 9px; border: 1px solid rgba(11,10,10,.15); padding: 0 10px; font: 500 16px 'Archivo', sans-serif; outline: none; box-sizing: border-box;">
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <button onClick="{{ it.dec }}" style-hover="border-color: #0017c0; color: #0017c0;" style="width: 30px; height: 30px; min-width: 30px; min-height: 30px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.25); background: #fff; cursor: pointer; font: 800 15px 'Archivo', sans-serif;">−</button>
@@ -489,10 +489,10 @@
           </div>
         </sc-if>
         <div style="display: flex; flex-direction: column; gap: 8px;">
-          <input value="{{ custName }}" onChange="{{ setCustName }}" placeholder="{{ t.custName }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 14px 'Archivo', sans-serif; outline: none;">
-          <input value="{{ custPhone }}" onChange="{{ setCustPhone }}" placeholder="{{ t.custPhone }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 14px 'Archivo', sans-serif; outline: none;">
+          <input value="{{ custName }}" onChange="{{ setCustName }}" placeholder="{{ t.custName }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 16px 'Archivo', sans-serif; outline: none;">
+          <input value="{{ custPhone }}" onChange="{{ setCustPhone }}" placeholder="{{ t.custPhone }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 16px 'Archivo', sans-serif; outline: none;">
           <sc-if value="{{ isDelivery }}" hint-placeholder-val="{{ false }}">
-            <input value="{{ custAddress }}" onChange="{{ setCustAddress }}" placeholder="{{ t.custAddress }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 14px 'Archivo', sans-serif; outline: none;">
+            <input value="{{ custAddress }}" onChange="{{ setCustAddress }}" placeholder="{{ t.custAddress }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 16px 'Archivo', sans-serif; outline: none;">
           </sc-if>
         </div>
         <div style="display: flex; flex-direction: column; gap: 5px; font: 500 14px 'Archivo', sans-serif;">
