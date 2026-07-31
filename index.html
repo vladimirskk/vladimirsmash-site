@@ -581,7 +581,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null };
+  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -591,6 +591,13 @@ class Component extends DCLogic {
   }
   ls(key) {
     try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  loadTrackOrder() {
+    try {
+      const t = JSON.parse(localStorage.getItem('vs_trackOrder') || 'null');
+      if (t && t.status !== 'rejected') return t;
+    } catch (e) {}
+    return null;
   }
   loadNotes() {
     try { return JSON.parse(localStorage.getItem('vs_notes') || '{}'); } catch (e) { return {}; }
@@ -605,6 +612,7 @@ class Component extends DCLogic {
   componentDidMount() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (!window.location.hash || window.location.hash === '#top') window.scrollTo(0, 0);
+    if (this.state.trackOrder) this.subscribeTrackOrder(this.state.trackOrder.id);
     this.loadSupabase();
   }
 
@@ -659,13 +667,33 @@ class Component extends DCLogic {
       subtotal: order.subtotal, delivery_fee: order.fee, total: order.total
     }).select().single();
     if (error) { console.error('order insert error', error); return code; }
-    this.setState({ trackOrder: { id: data.id, code, status: 'pending' } });
-    window.__sbClient.channel('track-order-' + data.id)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'online_orders', filter: 'id=eq.' + data.id }, (payload) => {
-        this.setState(s => s.trackOrder && s.trackOrder.id === data.id ? { trackOrder: { ...s.trackOrder, status: payload.new.status } } : {});
-      })
-      .subscribe();
+    const track = { id: data.id, code, status: 'pending', eta_minutes: null };
+    this.setState({ trackOrder: track });
+    try { localStorage.setItem('vs_trackOrder', JSON.stringify(track)); } catch (e) {}
+    this.subscribeTrackOrder(data.id);
     return code;
+  }
+
+  subscribeTrackOrder(id) {
+    if (this._trackChannel) { try { window.__sbClient.removeChannel(this._trackChannel); } catch (e) {} }
+    if (this._trackPoll) clearInterval(this._trackPoll);
+    const applyRow = (row) => {
+      this.setState(s => {
+        if (!s.trackOrder || s.trackOrder.id !== id) return {};
+        const track = { ...s.trackOrder, status: row.status, eta_minutes: row.eta_minutes ?? s.trackOrder.eta_minutes };
+        try { localStorage.setItem('vs_trackOrder', JSON.stringify(track)); } catch (e) {}
+        return { trackOrder: track };
+      });
+    };
+    this._trackChannel = window.__sbClient.channel('track-order-' + id)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'online_orders', filter: 'id=eq.' + id }, (payload) => applyRow(payload.new))
+      .subscribe();
+    this._trackPoll = setInterval(async () => {
+      const o = this.state.trackOrder;
+      if (!o || o.id !== id) { clearInterval(this._trackPoll); return; }
+      const { data: row } = await window.__sbClient.from('online_orders').select('status, eta_minutes').eq('id', id).single();
+      if (row) applyRow(row);
+    }, 6000);
   }
 
   scrollProductsToTop() {
@@ -848,7 +876,7 @@ class Component extends DCLogic {
       payNoteDelivery: 'Plătești cash la livrator. Plata cu cardul online va fi disponibilă în curând.', payNotePickup: 'Poți plăti cash sau cu cardul la ridicare, în locație.',
       barView: 'Vezi coșul',
       confTitle: 'Comandă trimisă!', conf: 'Comanda {id} ({total}) a fost înregistrată — {mode}.', confModeD: 'livrare', confModeP: 'ridicare din locație', confClose: 'Super, mulțumesc',
-      trackPending: 'Comanda {code} e la restaurant, așteaptă confirmarea…', trackAccepted: 'Comanda {code} a fost acceptată! Se pregătește.', trackRejected: 'Comanda {code} a fost respinsă. Sună-ne pentru detalii.',
+      trackPending: 'Comanda {code} e la restaurant, așteaptă confirmarea…', trackAccepted: 'Comanda {code} a fost acceptată! Se pregătește.', trackEta: ' — gata în ~{min} min', trackRejected: 'Comanda {code} a fost respinsă. Sună-ne pentru detalii.',
       upsellAdded: 'Adăugat în coș', upsellQ: 'Vrei cartofi, băutură sau desert pe lângă?', upsellNo: 'Nu, mulțumesc', upsellDone: 'Gata, adaugă la comandă',
       custName: 'Nume', custPhone: 'Telefon', custAddress: 'Adresă livrare',
       ftContact: 'Contact', ftHours: 'Orar', ftLinks: 'Linkuri', ftRights: 'Toate drepturile rezervate.'
@@ -881,7 +909,7 @@ class Component extends DCLogic {
       payNoteDelivery: 'Pay cash to the courier. Online card payment is coming soon.', payNotePickup: 'You can pay cash or by card on pickup, in person.',
       barView: 'View cart',
       confTitle: 'Order sent!', conf: 'Order {id} ({total}) has been placed — {mode}.', confModeD: 'delivery', confModeP: 'pickup', confClose: 'Great, thanks',
-      trackPending: 'Order {code} is with the restaurant, awaiting confirmation…', trackAccepted: 'Order {code} has been accepted! Being prepared.', trackRejected: 'Order {code} was declined. Please call us.',
+      trackPending: 'Order {code} is with the restaurant, awaiting confirmation…', trackAccepted: 'Order {code} has been accepted! Being prepared.', trackEta: ' — ready in ~{min} min', trackRejected: 'Order {code} was declined. Please call us.',
       upsellAdded: 'Added to cart', upsellQ: 'Want fries, a drink or dessert with that?', upsellNo: 'No, thanks', upsellDone: 'Done, add to order',
       custName: 'Name', custPhone: 'Phone', custAddress: 'Delivery address',
       ftContact: 'Contact', ftHours: 'Hours', ftLinks: 'Links', ftRights: 'All rights reserved.'
@@ -912,7 +940,8 @@ class Component extends DCLogic {
     if (!o) return '';
     if (o.status === 'pending') return t.trackPending.replace('{code}', o.code);
     if (o.status === 'rejected') return t.trackRejected.replace('{code}', o.code);
-    return t.trackAccepted.replace('{code}', o.code);
+    const eta = o.eta_minutes ? t.trackEta.replace('{min}', o.eta_minutes) : '';
+    return t.trackAccepted.replace('{code}', o.code) + eta;
   }
 
   trackStyle() {
@@ -1040,7 +1069,7 @@ class Component extends DCLogic {
       ordered: !!this.state.ordered,
       trackOrder: this.state.trackOrder, hasTrackOrder: !!this.state.trackOrder,
       trackText: this.trackText(t), trackStyle: this.trackStyle(),
-      dismissTrack: () => this.setState({ trackOrder: null }),
+      dismissTrack: () => { this.setState({ trackOrder: null }); try { localStorage.removeItem('vs_trackOrder'); } catch (e) {} },
       confText: this.state.ordered ? t.conf.replace('{id}', this.state.ordered.id).replace('{total}', this.ron(this.state.ordered.total)).replace('{mode}', this.state.ordered.mode === 'delivery' ? t.confModeD : t.confModeP) : '',
       resetOrder: () => this.setState({ ordered: null })
     };
