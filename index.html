@@ -1068,7 +1068,7 @@ class Component extends DCLogic {
       return { slotId: 'slot-' + p.id, slotHint: t.slotHint, name: p.name, desc: p.desc, priceLbl: this.ron(p.price), img: p.img, hasImg: !!p.img, noImg: !p.img, allergenLine, hasAllergens: !!allergenLine, qty, inCart: qty > 0, notInCart: qty === 0, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
     });
 
-    const noNoteCatIds = catsData.filter(c => /sos|b\u0103ut|drink|sauce/i.test(c.name)).map(c => c.id);
+    const noNoteCatIds = catsData.filter(c => /sos|b\u0103ut|baut|drink|sauce/i.test(c.name)).map(c => c.id);
     const cartItems = Object.keys(cart).map(id => {
       const p = menu.find(m => m.id === id), qty = cart[id];
       if (!p) return null;
