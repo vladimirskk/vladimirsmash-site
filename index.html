@@ -676,12 +676,17 @@ class Component extends DCLogic {
   async placeOrderSupabase(order) {
     if (!window.__sbClient) return;
     const code = Math.floor(1000 + Math.random() * 9000).toString();
-    const { data, error } = await window.__sbClient.from('online_orders').insert({
+    const payload = {
       restaurant_id: 'vladimirsmash', code, status: 'pending', source: 'site',
       customer_name: order.name, customer_phone: order.phone, address: order.address || '',
       fulfillment: order.mode, payment: order.method, items: order.items,
       subtotal: order.subtotal, delivery_fee: order.fee, total: order.total, marketing_opt_in: !!order.marketingOptIn
-    }).select().single();
+    };
+    let { data, error } = await window.__sbClient.from('online_orders').insert(payload).select().single();
+    if (error && error.code === 'PGRST204') {
+      delete payload.marketing_opt_in;
+      ({ data, error } = await window.__sbClient.from('online_orders').insert(payload).select().single());
+    }
     if (error) { console.error('order insert error', error); return code; }
     const track = { id: data.id, code, status: 'pending', eta_minutes: null };
     this.setState({ trackOrder: track });
