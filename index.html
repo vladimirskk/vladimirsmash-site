@@ -349,18 +349,18 @@
       </div>
     </div>
     <div>
-      <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px;">Legal</div>
+      <div style="font: 800 12px 'Archivo', sans-serif; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 10px;">{{ t.legalHeading }}</div>
       <div style="display: flex; flex-direction: column; gap: 10px; font: 500 15px 'Archivo', sans-serif;">
-        <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Termeni și condiții</button>
-        <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Confidențialitate (GDPR)</button>
-        <button onClick="{{ openCookies }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">Politica cookie-uri</button>
-        <button onClick="{{ openAnpc }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">ANPC / Soluționare litigii (SOL)</button>
+        <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">{{ t.legalTerms }}</button>
+        <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">{{ t.legalPrivacy }}</button>
+        <button onClick="{{ openCookies }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">{{ t.legalCookies }}</button>
+        <button onClick="{{ openAnpc }}" style="background: none; border: none; padding: 6px 0; min-height: 32px; cursor: pointer; text-align: left; color: #fff; text-decoration: underline; font: inherit;">{{ t.legalAnpc }}</button>
       </div>
     </div>
   </div>
   <div style="height: 2px; background: rgba(255,255,255,.3); margin: 28px 0;"></div>
   <div style="font: 400 12px/1.7 'Archivo', sans-serif; color: rgba(255,255,255,.75); max-width: 640px;">
-    <strong style="color: rgba(255,255,255,.8);">PFA Andor V. Angela Helene</strong> · CUI 43966957 · F24/247/23.03.2021 · Sediu: Vasile Alecsandri 15, Baia Mare · Operator date cu caracter personal conform Regulamentului (UE) 2016/679.
+    <strong style="color: rgba(255,255,255,.8);">PFA Andor V. Angela Helene</strong> · CUI 43966957 · F24/247/23.03.2021 · {{ t.ftLegalOffice }}: Vasile Alecsandri 15, Baia Mare · {{ t.ftLegalOperator }}
   </div>
   <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.8);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
 </footer>
@@ -372,35 +372,35 @@
       <h3 style="margin: 0 0 16px; font: 900 22px/1.15 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: #0017c0;">{{ legalTitle }}</h3>
       <sc-if value="{{ isTerms }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Comenzile plasate prin acest site reprezintă comenzi ferme, conform Ordonanței de Urgență nr. 34/2014 privind drepturile consumatorilor.</p>
-          <p>Produsele oferite sunt preparate alimentare proaspete, cu grad ridicat de perisabilitate. Conform art. 16 lit. c) din OUG 34/2014, dreptul de retragere din contract nu se aplică furnizării de produse alimentare perisabile pregătite la comandă.</p>
-          <p>Plata se poate face numerar sau cu cardul la livrare/ridicare, ori online cu cardul, atunci când această opțiune este disponibilă. Prețurile afișate includ TVA.</p>
-          <p>Pentru orice reclamație legată de o comandă, ne poți contacta telefonic sau la adresa de e-mail afișată în secțiunea de contact.</p>
+          <p>{{ t.termsP1 }}</p>
+          <p>{{ t.termsP2 }}</p>
+          <p>{{ t.termsP3 }}</p>
+          <p>{{ t.termsP4 }}</p>
         </div>
       </sc-if>
       <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Operator de date: <strong>PFA Andor V. Angela Helene</strong>, CUI 43966957, F24/247/23.03.2021, sediu Vasile Alecsandri 15, Baia Mare.</p>
-          <p>Colectăm numele, numărul de telefon și adresa de livrare pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).</p>
-          <p>Dacă ai bifat explicit opțiunea de la finalizarea comenzii, îți putem trimite prin SMS oferte și noutăți despre produsele noastre — temeiul legal fiind consimțământul tău, conform art. 6 alin. (1) lit. a) GDPR. Te poți dezabona oricând, printr-un simplu răspuns la SMS sau contactându-ne.</p>
-          <p>Nu vindem și nu cedăm datele tale unor terți. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.</p>
-          <p>Ai dreptul de acces, rectificare, ștergere și opoziție cu privire la datele tale — ne poți scrie la adresa de e-mail din secțiunea de contact. Te poți adresa și Autorității Naționale de Supraveghere a Prelucrării Datelor cu Caracter Personal (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener" style="color: #0017c0;">dataprotection.ro</a>).</p>
+          <p>{{ t.privacyP1 }}</p>
+          <p>{{ t.privacyP2 }}</p>
+          <p>{{ t.privacyP3 }}</p>
+          <p>{{ t.privacyP4 }}</p>
+          <p>{{ t.privacyP5 }}</p>
         </div>
       </sc-if>
       <sc-if value="{{ isCookies }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Acest site nu folosește cookie-uri.</p>
-          <p>Folosim doar memoria locală a browser-ului tău (local storage), strict necesară funcționării site-ului — de exemplu, pentru a păstra coșul de comandă și datele completate în timpul sesiunii. Aceste date rămân doar pe dispozitivul tău și nu sunt transmise către terți.</p>
-          <p>Nu folosim cookie-uri de marketing, analiză sau urmărire (tracking) ale unor terți.</p>
+          <p>{{ t.cookiesP1 }}</p>
+          <p>{{ t.cookiesP2 }}</p>
+          <p>{{ t.cookiesP3 }}</p>
         </div>
       </sc-if>
       <sc-if value="{{ isAnpc }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Conform legislației privind protecția consumatorilor, te informăm că poți depune o reclamație la Autoritatea Națională pentru Protecția Consumatorilor (ANPC): <a href="https://anpc.ro" target="_blank" rel="noopener" style="color: #0017c0;">anpc.ro</a>.</p>
-          <p>De asemenea, poți folosi platforma europeană de Soluționare Online a Litigiilor (SOL): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style="color: #0017c0;">ec.europa.eu/consumers/odr</a>.</p>
+          <p>{{ t.anpcP1 }} <a href="https://anpc.ro" target="_blank" rel="noopener" style="color: #0017c0;">anpc.ro</a></p>
+          <p>{{ t.anpcP2 }} <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" style="color: #0017c0;">ec.europa.eu/consumers/odr</a></p>
         </div>
       </sc-if>
-      <button onClick="{{ closeLegal }}" style-hover="background: #0012a0;" style="width: 100%; margin-top: 22px; height: 46px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">Închide</button>
+      <button onClick="{{ closeLegal }}" style-hover="background: #0012a0;" style="width: 100%; margin-top: 22px; height: 46px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.legalClose }}</button>
     </div>
   </div>
 </sc-if>
@@ -456,7 +456,9 @@
           <div style="flex: 1; min-width: 0;">
             <div style="font: 800 14px 'Archivo', sans-serif; text-transform: uppercase;">{{ it.name }}</div>
             <div style="font: 500 13px 'Archivo', sans-serif; color: #0017c0;">{{ it.lineLbl }}</div>
-            <input value="{{ it.note }}" onChange="{{ it.setNote }}" placeholder="{{ t.noteHint }}" style="margin-top: 6px; width: 100%; height: 32px; border-radius: 9px; border: 1px solid rgba(11,10,10,.15); padding: 0 10px; font: 500 16px 'Archivo', sans-serif; outline: none; box-sizing: border-box;">
+            <sc-if value="{{ it.canNote }}" hint-placeholder-val="{{ true }}">
+              <input value="{{ it.note }}" onChange="{{ it.setNote }}" placeholder="{{ t.noteHint }}" style="margin-top: 6px; width: 100%; height: 32px; border-radius: 9px; border: 1px solid rgba(11,10,10,.15); padding: 0 10px; font: 500 16px 'Archivo', sans-serif; outline: none; box-sizing: border-box;">
+            </sc-if>
           </div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <button onClick="{{ it.dec }}" style-hover="border-color: #0017c0; color: #0017c0;" style="width: 30px; height: 30px; min-width: 30px; min-height: 30px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.25); background: #fff; cursor: pointer; font: 800 15px 'Archivo', sans-serif;">−</button>
@@ -498,11 +500,11 @@
           </sc-if>
           <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font: 500 12.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.65); margin-top: 2px;">
             <input type="checkbox" checked="{{ marketingOptIn }}" onChange="{{ toggleMarketingOptIn }}" style="margin-top: 2px; width: 16px; height: 16px; accent-color: #0017c0; flex: none;">
-            <span>Vreau reduceri exclusive și oferte prin SMS (poți renunța oricând).</span>
+            <span>{{ t.marketingConsent }}</span>
           </label>
           <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font: 500 12.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.65);">
             <input type="checkbox" checked="{{ termsAccepted }}" onChange="{{ toggleTermsAccepted }}" style="margin-top: 2px; width: 16px; height: 16px; accent-color: #0017c0; flex: none;">
-            <span>Sunt de acord cu <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">Termenii și Condițiile</button> și <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">Politica de confidențialitate</button>.</span>
+            <span>{{ t.termsPre }} <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">{{ t.legalTerms }}</button> {{ t.termsAnd }} <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">{{ t.termsPrivacyLink }}</button>{{ t.termsPost }}</span>
           </label>
         </div>
         <div style="display: flex; flex-direction: column; gap: 5px; font: 500 14px 'Archivo', sans-serif;">
@@ -822,6 +824,39 @@ class Component extends DCLogic {
   }
 
   postsData() {
+    if (this.state.lang === 'en') return [
+      { slug: 'ce-este-smash-burger', date: 'July 12, 2026', title: 'What is a smash burger and how is it different from a classic burger', excerpt: 'Why pressing the patty on a hot grill gives the best caramelized crust in Baia Mare.', paragraphs: [
+        'A smash burger is made from fresh beef, formed into a ball and pressed ("smashed") directly onto the hot griddle. Pressing creates maximum contact between the meat and the hot surface, producing a caramelized crust (the Maillard reaction) that a classic, thick-cooked burger can\u2019t achieve.',
+        'At Vladimir Smash we use fresh beef, never frozen, smashed the moment it hits the griddle. The result: crispy edges, a juicy center, and an intense grilled-meat flavor, not just boiled.',
+        'The difference is felt mostly in texture — a classic burger is thick and soft, a smash burger is thin, crispy on the outside, juicy inside, with multiple layers of meat and melted cheese.',
+        'If you\u2019re in Baia Mare or Maramureș and want to try an authentic American smash burger, you can order online directly from our menu.'
+      ]},
+      { slug: 'carne-proaspata-vs-congelata', date: 'July 15, 2026', title: 'Why we use fresh beef, never frozen', excerpt: 'The difference in taste and texture between fresh and frozen beef in burgers.', paragraphs: [
+        'Fresh beef keeps its natural juices, meaning a juicier burger with a more intense meat flavor. Freezing breaks down muscle fibers and loses juiciness on thawing.',
+        'At Vladimir Smash, the beef for our burgers arrives fresh, never frozen, and is prepared the same day. That translates directly into the texture of the smash crust and the juiciness inside.',
+        'It\u2019s a detail that seems small but makes the difference between an ordinary burger and a memorable one — and it\u2019s one of the reasons customers in Baia Mare choose our smash burgers.'
+      ]},
+      { slug: 'cartofi-pai-proaspat-taiati', date: 'July 18, 2026', title: 'Freshly cut fries — why it matters', excerpt: 'The difference between freshly cut fries and frozen, pre-processed ones.', paragraphs: [
+        'Freshly cut fries keep more of the potato\u2019s natural texture — crispy outside, fluffy inside. Frozen, industrially pre-processed fries lose that texture and often taste more uniform, "factory-made".',
+        'At Vladimir Smash we cut our potatoes fresh, close to preparation time, for fries that perfectly complement a smash burger — not just a side, but part of the experience.',
+        'The combination of freshly cut fries with a smash burger made from fresh beef and a Martin\u2019s bun is what we aim to deliver with every order, whether delivery or pickup in Baia Mare.'
+      ]},
+      { slug: 'chifle-martins-burgeri-americani', date: 'July 21, 2026', title: 'Martin\u2019s buns — what makes them special for American burgers', excerpt: 'Why the bun matters just as much as the meat in an authentic American burger.', paragraphs: [
+        'Martin\u2019s buns are a staple in the world of authentic American burgers — soft, slightly sweet, sturdy enough to hold the burger\u2019s juices without falling apart.',
+        'Their fluffy yet dense texture is what sets them apart from an ordinary supermarket bun, which softens quickly and throws off the burger\u2019s balance.',
+        'At Vladimir Smash we use Martin\u2019s buns for every burger on the menu, because a great smash burger is built from every ingredient, not just the meat.'
+      ]},
+      { slug: 'aripioare-de-pui-crocante', date: 'July 24, 2026', title: 'Crispy chicken wings — the perfect addition to a burger order', excerpt: 'A quick guide to our chicken wings, cooked crispy, alongside smash burgers.', paragraphs: [
+        'Chicken wings are the perfect choice alongside a smash burger — crispy outside, tender inside, ready in just a few minutes.',
+        'We cook them until crispy and serve them with the sauces on the menu, for anyone who wants to round out their order with something on the side.',
+        'They\u2019re available to order online, alongside burgers and fries, with delivery or pickup in Baia Mare.'
+      ]},
+      { slug: 'livrare-burgeri-baia-mare-maramures', date: 'July 26, 2026', title: 'Burger delivery in Baia Mare and Maramureș — covered zones', excerpt: 'How delivery works for smash burger orders in Baia Mare.', paragraphs: [
+        'Online orders of smash burgers from Vladimir Smash can be delivered in Baia Mare, with delivery zones and fees shown directly on the site at checkout.',
+        'You can also choose to pick up your order in person from our location on Vasile Alecsandri 15, Baia Mare, if you want your burgers as fast as possible, hot off the griddle.',
+        'For customers in Maramureș outside the delivery zone, pickup remains the fastest option — your order is prepared for the time you choose to collect it.'
+      ]}
+    ];
     return [
       { slug: 'ce-este-smash-burger', date: '12 Iulie 2026', title: 'Ce este un smash burger și prin ce diferă de un burger clasic', excerpt: 'De ce carnea presată pe grill la temperatură mare dă cea mai bună crustă caramelizată din Baia Mare.', paragraphs: [
         'Un smash burger se face din carne de vită proaspătă, formată în bilă și presată ("smash") direct pe plita încinsă. Presarea creează contact maxim între carne și suprafața fierbinte, ceea ce produce o crustă caramelizată (reacția Maillard) pe care un burger clasic, gătit gros, nu o poate obține.',
@@ -889,7 +924,26 @@ class Component extends DCLogic {
       trackPending: 'Comanda {code} e la restaurant, așteaptă confirmarea…', trackAccepted: 'Comanda {code} a fost acceptată! Se pregătește.', trackEta: ' — gata în ~{min} min', trackRejected: 'Comanda {code} a fost respinsă. Sună-ne pentru detalii.',
       upsellAdded: 'Adăugat în coș', upsellQ: 'Vrei cartofi, băutură sau desert pe lângă?', upsellNo: 'Nu, mulțumesc', upsellDone: 'Gata, adaugă la comandă',
       custName: 'Nume', custPhone: 'Telefon', custAddress: 'Adresă livrare',
-      ftContact: 'Contact', ftHours: 'Orar', ftLinks: 'Linkuri', ftRights: 'Toate drepturile rezervate.'
+      ftContact: 'Contact', ftHours: 'Orar', ftLinks: 'Linkuri', ftRights: 'Toate drepturile rezervate.',
+      legalHeading: 'Legal', legalTerms: 'Termeni și condiții', legalPrivacy: 'Confidențialitate (GDPR)', legalCookies: 'Politica cookie-uri', legalAnpc: 'ANPC / Soluționare litigii (SOL)',
+      marketingConsent: 'Vreau reduceri exclusive și oferte prin SMS (poți renunța oricând).',
+      termsPre: 'Sunt de acord cu', termsAnd: 'și', termsPrivacyLink: 'Politica de confidențialitate', termsPost: '.',
+      termsP1: 'Comenzile plasate prin acest site reprezintă comenzi ferme, conform Ordonanței de Urgență nr. 34/2014 privind drepturile consumatorilor.',
+      termsP2: 'Produsele oferite sunt preparate alimentare proaspete, cu grad ridicat de perisabilitate. Conform art. 16 lit. c) din OUG 34/2014, dreptul de retragere din contract nu se aplică furnizării de produse alimentare perisabile pregătite la comandă.',
+      termsP3: 'Plata se poate face numerar sau cu cardul la livrare/ridicare, ori online cu cardul, atunci când această opțiune este disponibilă. Prețurile afișate includ TVA.',
+      termsP4: 'Pentru orice reclamație legată de o comandă, ne poți contacta telefonic sau la adresa de e-mail afișată în secțiunea de contact.',
+      privacyP1: 'Operator de date: PFA Andor V. Angela Helene, CUI 43966957, F24/247/23.03.2021, sediu Vasile Alecsandri 15, Baia Mare.',
+      privacyP2: 'Colectăm numele, numărul de telefon și adresa de livrare pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).',
+      privacyP3: 'Dacă ai bifat explicit opțiunea de la finalizarea comenzii, îți putem trimite prin SMS oferte și noutăți despre produsele noastre — temeiul legal fiind consimțământul tău, conform art. 6 alin. (1) lit. a) GDPR. Te poți dezabona oricând, printr-un simplu răspuns la SMS sau contactându-ne.',
+      privacyP4: 'Nu vindem și nu cedăm datele tale unor terți. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.',
+      privacyP5: 'Ai dreptul de acces, rectificare, ștergere și opoziție cu privire la datele tale — ne poți scrie la adresa de e-mail din secțiunea de contact. Te poți adresa și Autorității Naționale de Supraveghere a Prelucrării Datelor cu Caracter Personal (dataprotection.ro).',
+      cookiesP1: 'Acest site nu folosește cookie-uri.',
+      cookiesP2: 'Folosim doar memoria locală a browser-ului tău (local storage), strict necesară funcționării site-ului — de exemplu, pentru a păstra coșul de comandă și datele completate în timpul sesiunii. Aceste date rămân doar pe dispozitivul tău și nu sunt transmise către terți.',
+      cookiesP3: 'Nu folosim cookie-uri de marketing, analiză sau urmărire (tracking) ale unor terți.',
+      anpcP1: 'Conform legislației privind protecția consumatorilor, te informăm că poți depune o reclamație la Autoritatea Națională pentru Protecția Consumatorilor (ANPC): anpc.ro.',
+      anpcP2: 'De asemenea, poți folosi platforma europeană de Soluționare Online a Litigiilor (SOL): ec.europa.eu/consumers/odr.',
+      legalClose: 'Închide',
+      ftLegalOffice: 'Sediu', ftLegalOperator: 'Operator date cu caracter personal conform Regulamentului (UE) 2016/679.'
     };
     const en = {
       cartBtn: 'Cart', add: 'Add',
@@ -922,7 +976,26 @@ class Component extends DCLogic {
       trackPending: 'Order {code} is with the restaurant, awaiting confirmation…', trackAccepted: 'Order {code} has been accepted! Being prepared.', trackEta: ' — ready in ~{min} min', trackRejected: 'Order {code} was declined. Please call us.',
       upsellAdded: 'Added to cart', upsellQ: 'Want fries, a drink or dessert with that?', upsellNo: 'No, thanks', upsellDone: 'Done, add to order',
       custName: 'Name', custPhone: 'Phone', custAddress: 'Delivery address',
-      ftContact: 'Contact', ftHours: 'Hours', ftLinks: 'Links', ftRights: 'All rights reserved.'
+      ftContact: 'Contact', ftHours: 'Hours', ftLinks: 'Links', ftRights: 'All rights reserved.',
+      legalHeading: 'Legal', legalTerms: 'Terms & Conditions', legalPrivacy: 'Privacy Policy (GDPR)', legalCookies: 'Cookie Policy', legalAnpc: 'Consumer Dispute Resolution (ANPC/SOL)',
+      marketingConsent: 'I\u2019d like exclusive discounts and offers by SMS (you can opt out anytime).',
+      termsPre: 'I agree to the', termsAnd: 'and', termsPrivacyLink: 'Privacy Policy', termsPost: '.',
+      termsP1: 'Orders placed through this site are firm orders, in accordance with Emergency Ordinance no. 34/2014 on consumer rights.',
+      termsP2: 'The products offered are fresh, highly perishable food items prepared to order. Under art. 16(c) of OUG 34/2014, the right of withdrawal does not apply to the supply of perishable food products prepared on order.',
+      termsP3: 'Payment can be made in cash or by card on delivery/pickup, or online by card where that option is available. Displayed prices include VAT.',
+      termsP4: 'For any complaint regarding an order, you can contact us by phone or at the email address shown in the contact section.',
+      privacyP1: 'Data controller: PFA Andor V. Angela Helene, Tax ID (CUI) 43966957, Reg. no. F24/247/23.03.2021, registered office Vasile Alecsandri 15, Baia Mare.',
+      privacyP2: 'We collect your name, phone number and delivery address solely to process and deliver your order. The legal basis is performance of a contract, under art. 6(1)(b) of Regulation (EU) 2016/679 (GDPR).',
+      privacyP3: 'If you explicitly checked the option at checkout, we may send you offers and news about our products by SMS \u2014 the legal basis being your consent, under art. 6(1)(a) GDPR. You can opt out at any time, by replying to the SMS or contacting us.',
+      privacyP4: 'We do not sell or share your data with third parties. Data is kept only as long as necessary to process orders and meet tax obligations, then deleted.',
+      privacyP5: 'You have the right to access, rectify, delete and object regarding your data \u2014 you can write to us at the email address in the contact section. You may also contact the National Supervisory Authority for Personal Data Processing (dataprotection.ro).',
+      cookiesP1: 'This site does not use cookies.',
+      cookiesP2: 'We only use your browser\u2019s local storage, strictly necessary for the site to function \u2014 for example, to keep your cart and the details you filled in during your session. This data stays only on your device and is never sent to third parties.',
+      cookiesP3: 'We do not use marketing, analytics or third-party tracking cookies.',
+      anpcP1: 'Under consumer protection law, you can file a complaint with the National Authority for Consumer Protection (ANPC): anpc.ro.',
+      anpcP2: 'You can also use the EU Online Dispute Resolution (ODR) platform: ec.europa.eu/consumers/odr.',
+      legalClose: 'Close',
+      ftLegalOffice: 'Registered office', ftLegalOperator: 'Personal data controller under Regulation (EU) 2016/679.'
     };
     return this.state.lang === 'en' ? en : ro;
   }
@@ -995,10 +1068,12 @@ class Component extends DCLogic {
       return { slotId: 'slot-' + p.id, slotHint: t.slotHint, name: p.name, desc: p.desc, priceLbl: this.ron(p.price), img: p.img, hasImg: !!p.img, noImg: !p.img, allergenLine, hasAllergens: !!allergenLine, qty, inCart: qty > 0, notInCart: qty === 0, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
     });
 
+    const noNoteCatIds = catsData.filter(c => /sos|b\u0103ut|drink|sauce/i.test(c.name)).map(c => c.id);
     const cartItems = Object.keys(cart).map(id => {
       const p = menu.find(m => m.id === id), qty = cart[id];
       if (!p) return null;
-      return { name: p.name, qty, lineLbl: qty + ' × ' + this.ron(p.price) + '  =  ' + this.ron(qty * p.price), inc: () => setQty(id, qty + 1), dec: () => setQty(id, qty - 1), note: this.state.notes[id] || '', setNote: (e) => this.setState(s => { const notes = { ...s.notes, [id]: e.target.value }; this.persistCart(s.cart, notes); return { notes }; }) };
+      const canNote = !noNoteCatIds.includes(p.cat);
+      return { name: p.name, qty, lineLbl: qty + ' × ' + this.ron(p.price) + '  =  ' + this.ron(qty * p.price), inc: () => setQty(id, qty + 1), dec: () => setQty(id, qty - 1), note: this.state.notes[id] || '', setNote: (e) => this.setState(s => { const notes = { ...s.notes, [id]: e.target.value }; this.persistCart(s.cart, notes); return { notes }; }), canNote };
     }).filter(Boolean);
     const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
     const subtotal = Object.keys(cart).reduce((a, id) => a + (menu.find(m => m.id === id).price * cart[id]), 0);
@@ -1065,7 +1140,7 @@ class Component extends DCLogic {
       legalOpen: !!this.state.legalOpen, closeLegal: () => this.setState({ legalOpen: null }), stopProp: (e) => e.stopPropagation(),
       isTerms: this.state.legalOpen === 'terms', isPrivacy: this.state.legalOpen === 'privacy', isCookies: this.state.legalOpen === 'cookies', isAnpc: this.state.legalOpen === 'anpc',
       posts: this.postsData(), blogListView: true,
-      legalTitle: ({ terms: 'Termeni și condiții', privacy: 'Confidențialitate (GDPR)', cookies: 'Politica cookie-uri', anpc: 'ANPC / Soluționare litigii' })[this.state.legalOpen] || '',
+      legalTitle: ({ terms: t.legalTerms, privacy: t.legalPrivacy, cookies: t.legalCookies, anpc: t.legalAnpc })[this.state.legalOpen] || '',
       openTerms: () => this.setState({ legalOpen: 'terms' }), openPrivacy: () => this.setState({ legalOpen: 'privacy' }), openCookies: () => this.setState({ legalOpen: 'cookies' }), openAnpc: () => this.setState({ legalOpen: 'anpc' }),
       setDelivery: () => this.setState({ mode: 'delivery' }), setPickup: () => this.setState({ mode: 'pickup' }),
       deliveryBtnStyle: seg(isDelivery), pickupBtnStyle: seg(!isDelivery),
