@@ -381,15 +381,17 @@
       <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
           <p>Operator de date: <strong>PFA Andor V. Angela Helene</strong>, CUI 43966957, F24/247/23.03.2021, sediu Vasile Alecsandri 15, Baia Mare.</p>
-          <p>Colectăm numele, numărul de telefon și adresa de livrare exclusiv pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).</p>
-          <p>Nu vindem și nu cedăm datele tale unor terți în scop de marketing. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.</p>
+          <p>Colectăm numele, numărul de telefon și adresa de livrare pentru procesarea și livrarea comenzii tale. Temeiul legal este executarea contractului, conform art. 6 alin. (1) lit. b) din Regulamentul (UE) 2016/679 (GDPR).</p>
+          <p>Dacă ai bifat explicit opțiunea de la finalizarea comenzii, îți putem trimite prin SMS oferte și noutăți despre produsele noastre — temeiul legal fiind consimțământul tău, conform art. 6 alin. (1) lit. a) GDPR. Te poți dezabona oricând, printr-un simplu răspuns la SMS sau contactându-ne.</p>
+          <p>Nu vindem și nu cedăm datele tale unor terți. Datele sunt păstrate pe durata necesară procesării comenzilor și obligațiilor fiscale, apoi șterse.</p>
           <p>Ai dreptul de acces, rectificare, ștergere și opoziție cu privire la datele tale — ne poți scrie la adresa de e-mail din secțiunea de contact. Te poți adresa și Autorității Naționale de Supraveghere a Prelucrării Datelor cu Caracter Personal (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener" style="color: #0017c0;">dataprotection.ro</a>).</p>
         </div>
       </sc-if>
       <sc-if value="{{ isCookies }}" hint-placeholder-val="{{ false }}">
         <div style="font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75);">
-          <p>Acest site folosește doar cookie-uri strict necesare funcționării — de exemplu, pentru a păstra coșul de comandă și limba preferată în timpul sesiunii tale.</p>
-          <p>Nu folosim cookie-uri de marketing sau de urmărire (tracking) ale unor terți.</p>
+          <p>Acest site nu folosește cookie-uri.</p>
+          <p>Folosim doar memoria locală a browser-ului tău (local storage), strict necesară funcționării site-ului — de exemplu, pentru a păstra coșul de comandă și datele completate în timpul sesiunii. Aceste date rămân doar pe dispozitivul tău și nu sunt transmise către terți.</p>
+          <p>Nu folosim cookie-uri de marketing, analiză sau urmărire (tracking) ale unor terți.</p>
         </div>
       </sc-if>
       <sc-if value="{{ isAnpc }}" hint-placeholder-val="{{ false }}">
@@ -494,6 +496,14 @@
           <sc-if value="{{ isDelivery }}" hint-placeholder-val="{{ false }}">
             <input value="{{ custAddress }}" onChange="{{ setCustAddress }}" placeholder="{{ t.custAddress }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 16px 'Archivo', sans-serif; outline: none;">
           </sc-if>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font: 500 12.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.65); margin-top: 2px;">
+            <input type="checkbox" checked="{{ marketingOptIn }}" onChange="{{ toggleMarketingOptIn }}" style="margin-top: 2px; width: 16px; height: 16px; accent-color: #0017c0; flex: none;">
+            <span>Vreau reduceri exclusive și oferte prin SMS (poți renunța oricând).</span>
+          </label>
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font: 500 12.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.65);">
+            <input type="checkbox" checked="{{ termsAccepted }}" onChange="{{ toggleTermsAccepted }}" style="margin-top: 2px; width: 16px; height: 16px; accent-color: #0017c0; flex: none;">
+            <span>Sunt de acord cu <button onClick="{{ openTerms }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">Termenii și Condițiile</button> și <button onClick="{{ openPrivacy }}" style="background: none; border: none; padding: 0; cursor: pointer; color: #0017c0; text-decoration: underline; font: inherit;">Politica de confidențialitate</button>.</span>
+          </label>
         </div>
         <div style="display: flex; flex-direction: column; gap: 5px; font: 500 14px 'Archivo', sans-serif;">
           <div style="display: flex; justify-content: space-between;"><span style="color: rgba(11,10,10,.6);">{{ t.subtotal }}</span><span>{{ subtotalLbl }}</span></div>
@@ -581,7 +591,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
+  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', marketingOptIn: this.ls('vs_marketingOptIn') !== '0', termsAccepted: false, placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -664,7 +674,7 @@ class Component extends DCLogic {
       restaurant_id: 'vladimirsmash', code, status: 'pending', source: 'site',
       customer_name: order.name, customer_phone: order.phone, address: order.address || '',
       fulfillment: order.mode, payment: order.method, items: order.items,
-      subtotal: order.subtotal, delivery_fee: order.fee, total: order.total
+      subtotal: order.subtotal, delivery_fee: order.fee, total: order.total, marketing_opt_in: !!order.marketingOptIn
     }).select().single();
     if (error) { console.error('order insert error', error); return code; }
     const track = { id: data.id, code, status: 'pending', eta_minutes: null };
@@ -1020,13 +1030,13 @@ class Component extends DCLogic {
       });
     };
 
-    const custValid = this.state.custName.trim() && this.state.custPhone.trim() && (!isDelivery || this.state.custAddress.trim());
+    const custValid = this.state.custName.trim() && this.state.custPhone.trim() && (!isDelivery || this.state.custAddress.trim()) && this.state.termsAccepted;
     const placeOrder = (method) => {
       if (!custValid) return;
       const orderId = 'VS-' + Math.floor(1000 + Math.random() * 9000);
       const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' }; });
-      this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total });
-      this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '' });
+      this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total, marketingOptIn: this.state.marketingOptIn });
+      this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '', termsAccepted: false });
       try { localStorage.removeItem('vs_cart'); localStorage.removeItem('vs_notes'); localStorage.removeItem('vs_custName'); localStorage.removeItem('vs_custPhone'); localStorage.removeItem('vs_custAddress'); } catch (e) {}
     };
     this.placeOrderPending = placeOrder;
@@ -1039,6 +1049,8 @@ class Component extends DCLogic {
       catBlurb: '', products, reviews: this.reviews().map(r => ({ ...r, initial: r.name.charAt(0) })),
       showOutgoing, outgoingStyle, prevProducts,
       custName: this.state.custName, custPhone: this.state.custPhone, custAddress: this.state.custAddress,
+      marketingOptIn: this.state.marketingOptIn, toggleMarketingOptIn: (e) => { this.setState({ marketingOptIn: e.target.checked }); try { localStorage.setItem('vs_marketingOptIn', e.target.checked ? '1' : '0'); } catch (er) {} },
+      termsAccepted: this.state.termsAccepted, toggleTermsAccepted: (e) => this.setState({ termsAccepted: e.target.checked }),
       setCustName: (e) => { this.setState({ custName: e.target.value }); try { localStorage.setItem('vs_custName', e.target.value); } catch (er) {} }, setCustPhone: (e) => { this.setState({ custPhone: e.target.value }); try { localStorage.setItem('vs_custPhone', e.target.value); } catch (er) {} }, setCustAddress: (e) => { this.setState({ custAddress: e.target.value }); try { localStorage.setItem('vs_custAddress', e.target.value); } catch (er) {} },
       custValid,
       cartItems, cartCount, hasItems: cartCount > 0, cartEmpty: cartCount === 0, showBar: cartCount > 0 && !this.state.cartOpen && !this.state.ordered,
