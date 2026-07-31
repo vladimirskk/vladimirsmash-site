@@ -1085,7 +1085,7 @@ class Component extends DCLogic {
       return { name: p.name, qty, lineLbl: qty + ' × ' + this.ron(p.price) + '  =  ' + this.ron(qty * p.price), inc: () => setQty(id, qty + 1), dec: () => setQty(id, qty - 1), note: this.state.notes[id] || '', setNote: (e) => this.setState(s => { const notes = { ...s.notes, [id]: e.target.value }; this.persistCart(s.cart, notes); return { notes }; }), canNote };
     }).filter(Boolean);
     const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
-    const subtotal = Object.keys(cart).reduce((a, id) => a + (menu.find(m => m.id === id).price * cart[id]), 0);
+    const subtotal = Object.keys(cart).reduce((a, id) => { const p = menu.find(m => m.id === id); return p ? a + p.price * cart[id] : a; }, 0);
     const isDelivery = mode === 'delivery';
     const fee = isDelivery ? (zone === 1 ? zone1Fee : zone2Fee) : 0;
     const total = subtotal + fee;
@@ -1118,7 +1118,7 @@ class Component extends DCLogic {
     const placeOrder = (method) => {
       if (!custValid) return;
       const orderId = 'VS-' + Math.floor(1000 + Math.random() * 9000);
-      const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' }; });
+      const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return p ? { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' } : null; }).filter(Boolean);
       this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total, marketingOptIn: this.state.marketingOptIn });
       this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '', termsAccepted: false });
       try { localStorage.removeItem('vs_cart'); localStorage.removeItem('vs_notes'); localStorage.removeItem('vs_custName'); localStorage.removeItem('vs_custPhone'); localStorage.removeItem('vs_custAddress'); } catch (e) {}
