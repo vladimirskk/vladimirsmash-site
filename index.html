@@ -1230,7 +1230,7 @@ class Component extends DCLogic {
       selectedZoneDesc: zone === 1 ? t.zone1Desc : t.zone2Desc,
       setRo: () => this.setState({ lang: 'ro' }), setEn: () => this.setState({ lang: 'en' }),
       roBtnStyle: langSeg(lang === 'ro'), enBtnStyle: langSeg(lang === 'en'),
-      payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'), payCash: () => this.sendOtp('cash'),
+      payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'), payCash: () => placeOrder('cash'),
       otpModalOpen: this.state.otpModalOpen, otpCode: this.state.otpCode, otpSending: this.state.otpSending, otpVerifying: this.state.otpVerifying, otpError: this.state.otpError,
       sendOtpError: !this.state.otpModalOpen ? this.state.otpError : '', payCashLbl: this.state.otpSending ? 'Se trimite codul…' : t.payCash,
       setOtpCode: (e) => this.setState({ otpCode: e.target.value.replace(/\D/g, '').slice(0, 4) }), verifyOtp: () => this.verifyOtp(), closeOtp: () => this.setState({ otpModalOpen: false }),
