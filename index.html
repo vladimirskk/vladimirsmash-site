@@ -299,6 +299,9 @@
         <div style="font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.65); white-space: nowrap;">{{ minOrderLbl }}</div>
       </div>
     </div>
+    <div style="border: 1.5px dashed rgba(11,10,10,.2); border-radius: 24px; padding: 18px 22px; font: 500 13.5px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.6);">
+      {{ t.zoneOutOfRange }} <a href="tel:+40746027011" style="color: #0017c0; font-weight: 700;">0746 027 011</a>
+    </div>
     <div style="background: #0017c0; color: #fff; border-radius: 24px; padding: 22px; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px;">
       <div style="font: 800 13px 'Archivo', sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #c9d0ff;">{{ t.pickupKicker }}</div>
       <div style="font: 800 20px/1.25 'Archivo', sans-serif;">Vasile Alecsandri 15, Baia Mare</div>
@@ -585,12 +588,38 @@
 <!-- ===== ORDER CONFIRMATION ===== -->
 <sc-if value="{{ ordered }}" hint-placeholder-val="{{ false }}">
   <div style="position: fixed; inset: 0; z-index: 100; background: rgba(11,10,10,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: grid; place-items: center; padding: 20px;">
-    <div style="background: rgba(255,255,255,.92); backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,.9); border-radius: 32px; padding: 36px 32px; max-width: 420px; width: 100%; text-align: left; box-shadow: 0 40px 100px rgba(11,10,10,.35); animation: vs-pop .35s cubic-bezier(.2,.9,.3,1.2) both;">
+    <div style="background: rgba(255,255,255,.92); backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,.9); border-radius: 32px; padding: 36px 32px; max-width: 460px; width: 100%; text-align: left; box-shadow: 0 40px 100px rgba(11,10,10,.35); animation: vs-pop .35s cubic-bezier(.2,.9,.3,1.2) both; max-height: 88vh; overflow-y: auto;">
       <div style="width: 58px; height: 58px; border-radius: 999px; background: #0017c0; display: grid; place-items: center; margin-bottom: 18px;">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
       </div>
       <h3 style="margin: 0 0 8px; font: 900 26px 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em;">{{ t.confTitle }}</h3>
-      <p style="margin: 0 0 22px; font: 500 15px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.65);">{{ confText }}</p>
+      <p style="margin: 0 0 18px; font: 500 15px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.65);">{{ confText }}</p>
+      <div style="border-top: 1.5px solid rgba(11,10,10,.12); border-bottom: 1.5px solid rgba(11,10,10,.12); padding: 16px 0; margin-bottom: 22px; display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ orderedItems }}" as="oi" hint-placeholder-count="2">
+          <div style="display: flex; justify-content: space-between; gap: 10px; font: 500 14px/1.4 'Archivo', sans-serif;">
+            <span>{{ oi.qty }}× {{ oi.name }}<sc-if value="{{ oi.note }}" hint-placeholder-val="{{ false }}"><br><span style="color: rgba(11,10,10,.5); font-size: 12.5px;">{{ oi.noteLbl }}</span></sc-if></span>
+            <span style="white-space: nowrap; font-weight: 700;">{{ oi.priceLbl }}</span>
+          </div>
+        </sc-for>
+        <div style="height: 1px; background: rgba(11,10,10,.1); margin: 4px 0;"></div>
+        <div style="display: flex; justify-content: space-between; font: 500 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.6);">
+          <span>{{ t.subtotal }}</span><span>{{ orderedSubtotalLbl }}</span>
+        </div>
+        <sc-if value="{{ orderedIsDelivery }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; justify-content: space-between; font: 500 13.5px 'Archivo', sans-serif; color: rgba(11,10,10,.6);">
+            <span>{{ t.deliveryFee }}</span><span>{{ orderedFeeLbl }}</span>
+          </div>
+        </sc-if>
+        <div style="display: flex; justify-content: space-between; font: 800 16px 'Archivo', sans-serif;">
+          <span>{{ t.total }}</span><span style="color: #0017c0;">{{ orderedTotalLbl }}</span>
+        </div>
+        <div style="height: 1px; background: rgba(11,10,10,.1); margin: 4px 0;"></div>
+        <div style="font: 500 13.5px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.7);">
+          <div>{{ orderedModeLbl }}<sc-if value="{{ orderedIsDelivery }}" hint-placeholder-val="{{ false }}"> — {{ orderedAddress }}</sc-if></div>
+          <div>{{ orderedPaymentLbl }}</div>
+          <div>{{ orderedName }} · {{ orderedPhone }}</div>
+        </div>
+      </div>
       <button onClick="{{ resetOrder }}" style-hover="background: #0012a0;" style="width: 100%; height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.confClose }}</button>
     </div>
   </div>
@@ -959,7 +988,7 @@ class Component extends DCLogic {
       aboutSticker: 'Smash după smash',
       revKicker: 'Recenzii Google', revTitle: 'Lumea zice WOW', revCount: 'pe Google', revCta: 'Vezi toate recenziile pe Google', revNote: 'Recenzii exemplu — la lansare se conectează contul Google Business și se afișează cele reale.',
       mapKicker: 'Livrare', mapTitle: 'Unde livrăm', zone1: 'Zona 1', zone2: 'Zona 2',
-      zone1Desc: 'Orașul Baia Mare (fără cartierul Ferneziu)', zone2Desc: 'Cartierul Ferneziu și satele/comunele limitrofe',
+      zone1Desc: 'Orașul Baia Mare (fără cartierul Ferneziu) — 10 lei livrare', zone2Desc: 'Cartierul Ferneziu și satele/comunele limitrofe — 20 lei livrare', zoneOutOfRange: 'Pentru alte distanțe, te rugăm să ne suni pentru a stabili taxa de livrare.',
       minOrder: 'comandă minimă', pickupKicker: 'Sau ridici tu comanda', hours: 'Orar',
       modeDelivery: 'Livrare', modePickup: 'Ridicare', subtotal: 'Subtotal', deliveryFee: 'Taxă livrare', total: 'Total',
       cartTitle: 'Coșul tău', cartEmpty: 'Coșul e gol. Adaugă un smash din meniu.', upsellTitle: 'Merge perfect cu',
@@ -1011,7 +1040,7 @@ class Component extends DCLogic {
       aboutSticker: 'Smash after smash',
       revKicker: 'Google reviews', revTitle: 'People say WOW', revCount: 'on Google', revCta: 'See all reviews on Google', revNote: 'Sample reviews — at launch we connect your Google Business account and show the real ones.',
       mapKicker: 'Delivery', mapTitle: 'Where we deliver', zone1: 'Zone 1', zone2: 'Zone 2',
-      zone1Desc: 'Baia Mare city (excluding Ferneziu district)', zone2Desc: 'Ferneziu district and neighboring villages/communes',
+      zone1Desc: 'Baia Mare city (excluding Ferneziu district) — 10 RON delivery', zone2Desc: 'Ferneziu district and neighboring villages/communes — 20 RON delivery', zoneOutOfRange: 'For other distances, please call us to arrange the delivery fee.',
       minOrder: 'minimum order', pickupKicker: 'Or pick it up yourself', hours: 'Hours',
       modeDelivery: 'Delivery', modePickup: 'Pickup', subtotal: 'Subtotal', deliveryFee: 'Delivery fee', total: 'Total',
       cartTitle: 'Your cart', cartEmpty: 'Your cart is empty. Add a smash from the menu.', upsellTitle: 'Goes perfectly with',
@@ -1087,7 +1116,7 @@ class Component extends DCLogic {
     const catsData = this.cats();
     const catIds = catsData.map(c => c.id);
     const burgerCatIds = ['cat1779959468606', 'cat1779960481264', 'cat1779962224597'];
-    const zone1Fee = 10, zone2Fee = 25, minOrder = 30;
+    const zone1Fee = 10, zone2Fee = 20, minOrder = 30;
     const pill = (on) => 'border: 1.5px solid ' + (on ? '#0017c0' : 'rgba(11,10,10,.2)') + '; background: ' + (on ? '#0017c0' : '#fff') + '; color: ' + (on ? '#fff' : '#0b0a0a') + '; cursor: pointer; font: 800 13.5px Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 11px 14px; border-radius: 999px; transition: all .18s ease; white-space: nowrap; text-align: center;';
     const seg = (on) => 'flex: 1; border: none; cursor: pointer; border-radius: 999px; padding: 10px 6px; font: 800 13px Archivo, sans-serif; letter-spacing: .05em; text-transform: uppercase; transition: all .15s ease; background: ' + (on ? '#0017c0' : 'transparent') + '; color: ' + (on ? '#fff' : 'rgba(11,10,10,.6)') + ';';
     const langSeg = (on) => 'border: none; cursor: pointer; border-radius: 999px; padding: 7px 12px; font: 800 12px Archivo, sans-serif; background: ' + (on ? '#fff' : 'transparent') + '; color: ' + (on ? '#0017c0' : 'rgba(255,255,255,.8)') + ';';
@@ -1158,7 +1187,7 @@ class Component extends DCLogic {
       const orderId = 'VS-' + Math.floor(1000 + Math.random() * 9000);
       const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return p ? { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' } : null; }).filter(Boolean);
       this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total, marketingOptIn: this.state.marketingOptIn });
-      this.setState({ ordered: { id: orderId, method, mode, total }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '', termsAccepted: false });
+      this.setState({ ordered: { id: orderId, method, mode, total, subtotal, fee, items, address: this.state.custAddress, name: this.state.custName, phone: this.state.custPhone }, cartOpen: false, cart: {}, custName: '', custPhone: '', custAddress: '', notes: {}, phoneVerified: false, verifiedPhone: '', termsAccepted: false });
       try { localStorage.removeItem('vs_cart'); localStorage.removeItem('vs_notes'); localStorage.removeItem('vs_custName'); localStorage.removeItem('vs_custPhone'); localStorage.removeItem('vs_custAddress'); } catch (e) {}
     };
     this.placeOrderPending = placeOrder;
@@ -1209,6 +1238,16 @@ class Component extends DCLogic {
       trackIcon: this.state.trackOrder && this.state.trackOrder.status === 'accepted' ? '\u2713' : this.state.trackOrder && this.state.trackOrder.status === 'rejected' ? '\u2715' : '\u23f3',
       dismissTrack: () => { this.setState({ trackOrder: null }); try { localStorage.removeItem('vs_trackOrder'); } catch (e) {} },
       confText: this.state.ordered ? t.conf.replace('{id}', this.state.ordered.id).replace('{total}', this.ron(this.state.ordered.total)).replace('{mode}', this.state.ordered.mode === 'delivery' ? t.confModeD : t.confModeP) : '',
+      orderedItems: this.state.ordered ? this.state.ordered.items.map(it => ({ name: it.name, qty: it.qty, priceLbl: this.ron(it.price * it.qty), note: !!it.note, noteLbl: it.note })) : [],
+      orderedSubtotalLbl: this.state.ordered ? this.ron(this.state.ordered.subtotal) : '',
+      orderedFeeLbl: this.state.ordered ? this.ron(this.state.ordered.fee) : '',
+      orderedTotalLbl: this.state.ordered ? this.ron(this.state.ordered.total) : '',
+      orderedIsDelivery: this.state.ordered ? this.state.ordered.mode === 'delivery' : false,
+      orderedModeLbl: this.state.ordered ? (this.state.ordered.mode === 'delivery' ? t.modeDelivery : t.modePickup) : '',
+      orderedAddress: this.state.ordered ? this.state.ordered.address : '',
+      orderedPaymentLbl: this.state.ordered ? (this.state.ordered.method === 'cash' ? t.payCash : t.payCard) : '',
+      orderedName: this.state.ordered ? this.state.ordered.name : '',
+      orderedPhone: this.state.ordered ? this.state.ordered.phone : '',
       resetOrder: () => this.setState({ ordered: null })
     };
   }
