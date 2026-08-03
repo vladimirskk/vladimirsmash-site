@@ -498,11 +498,8 @@
           <div style="display: flex; gap: 8px;">
             <button onClick="{{ setZone1 }}" style="{{ zone1BtnStyle }}">{{ t.zone1 }} · {{ zone1FeeLbl }}</button>
             <button onClick="{{ setZone2 }}" style="{{ zone2BtnStyle }}">{{ t.zone2 }} · {{ zone2FeeLbl }}</button>
-            <button onClick="{{ toggleZoneInfo }}" aria-label="Info zone" style="flex: none; width: 38px; height: 38px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.2); background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font: 800 14px 'Archivo', sans-serif; color: #0017c0;">i</button>
           </div>
-          <sc-if value="{{ zoneInfoOpen }}" hint-placeholder-val="{{ false }}">
-            <div style="font: 500 13px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.6); background: rgba(0,23,192,.06); border-radius: 12px; padding: 10px 12px;">{{ selectedZoneDesc }}</div>
-          </sc-if>
+          <div style="font: 500 13px/1.5 'Archivo', sans-serif; color: rgba(11,10,10,.6); background: rgba(0,23,192,.06); border-radius: 12px; padding: 10px 12px;">{{ selectedZoneDesc }}</div>
         </sc-if>
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <input value="{{ custName }}" onChange="{{ setCustName }}" placeholder="{{ t.custName }}" style="height: 44px; border-radius: 12px; border: 1px solid rgba(11,10,10,.18); padding: 0 14px; font: 500 16px 'Archivo', sans-serif; outline: none;">
