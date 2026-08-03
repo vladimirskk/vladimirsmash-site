@@ -88,7 +88,8 @@
     @keyframes vs-fadeup { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes vs-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes vs-slidein { from { transform: translateX(100%); } to { transform: translateX(0); } }
-    @keyframes vs-pop { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes vs-flash { 0% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes vs-pulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } } { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     @keyframes vs-nudgex { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
   </style>
 </helmet>
@@ -424,9 +425,13 @@
 
 <!-- ===== ORDER TRACKING BAR ===== -->
 <sc-if value="{{ hasTrackOrder }}" hint-placeholder-val="{{ false }}">
-  <div style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 75; display: flex; align-items: center; gap: 14px; color: #fff; padding: 14px 18px; border-radius: 999px; box-shadow: 0 16px 44px rgba(11,10,10,.35); font: 700 14px 'Archivo', sans-serif; width: max-content; max-width: calc(100vw - 32px); {{ trackStyle }}">
+  <sc-if value="{{ trackJustUpdated }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; inset: 0; z-index: 74; background: rgba(0,23,192,.12); pointer-events: none; animation: vs-flash 1.1s ease-out;"></div>
+  </sc-if>
+  <div style="position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 75; display: flex; align-items: center; gap: 14px; color: #fff; padding: 16px 20px; border-radius: 999px; box-shadow: 0 16px 44px rgba(11,10,10,.35); font: 700 15px 'Archivo', sans-serif; width: max-content; max-width: calc(100vw - 32px); {{ trackStyle }} {{ trackPulseStyle }}">
+    <span style="font-size: 20px; line-height: 1;">{{ trackIcon }}</span>
     <span>{{ trackText }}</span>
-    <button onClick="{{ dismissTrack }}" style-hover="opacity: .7;" style="border: none; background: rgba(255,255,255,.2); color: #fff; width: 26px; height: 26px; border-radius: 999px; cursor: pointer; font: 700 14px 'Archivo', sans-serif; flex: none;">✕</button>
+    <button onClick="{{ dismissTrack }}" style-hover="opacity: .7;" style="border: none; background: rgba(255,255,255,.2); color: #fff; width: 30px; height: 30px; border-radius: 999px; cursor: pointer; font: 700 14px 'Archivo', sans-serif; flex: none;">✕</button>
   </div>
 </sc-if>
 
@@ -695,14 +700,47 @@ class Component extends DCLogic {
     return code;
   }
 
+  notifyStatusChange(track) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const t = this.i18n();
+      [0, 0.18].forEach((delay) => {
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + delay + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + 0.3);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay); osc.stop(ctx.currentTime + delay + 0.3);
+      });
+      if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+      if (document.hidden && 'Notification' in window) {
+        if (Notification.permission === 'granted') this.pushNotify(track, t);
+        else if (Notification.permission !== 'denied') Notification.requestPermission().then((p) => { if (p === 'granted') this.pushNotify(track, t); });
+      }
+    } catch (e) {}
+  }
+
+  pushNotify(track, t) {
+    const body = track.status === 'accepted' ? t.trackAccepted.replace('{code}', track.code) : track.status === 'rejected' ? t.trackRejected.replace('{code}', track.code) : t.trackPending.replace('{code}', track.code);
+    try { new Notification('Vladimir Smash', { body, icon: 'assets/logo-dark.svg' }); } catch (e) {}
+  }
+
   subscribeTrackOrder(id) {
     if (this._trackChannel) { try { window.__sbClient.removeChannel(this._trackChannel); } catch (e) {} }
     if (this._trackPoll) clearInterval(this._trackPoll);
     const applyRow = (row) => {
       this.setState(s => {
         if (!s.trackOrder || s.trackOrder.id !== id) return {};
+        const statusChanged = row.status !== s.trackOrder.status;
         const track = { ...s.trackOrder, status: row.status, eta_minutes: row.eta_minutes ?? s.trackOrder.eta_minutes };
         try { localStorage.setItem('vs_trackOrder', JSON.stringify(track)); } catch (e) {}
+        if (statusChanged) {
+          this.notifyStatusChange(track);
+          clearTimeout(this._trackFlashTimer);
+          this._trackFlashTimer = setTimeout(() => this.setState({ trackJustUpdated: false }), 1300);
+          return { trackOrder: track, trackJustUpdated: true };
+        }
         return { trackOrder: track };
       });
     };
@@ -1166,7 +1204,9 @@ class Component extends DCLogic {
       resendOtp: () => this.sendOtp(this.state.pendingMethod), otpPhoneLbl: this.state.custPhone,
       ordered: !!this.state.ordered,
       trackOrder: this.state.trackOrder, hasTrackOrder: !!this.state.trackOrder,
-      trackText: this.trackText(t), trackStyle: this.trackStyle(),
+      trackText: this.trackText(t), trackStyle: this.trackStyle(), trackJustUpdated: !!this.state.trackJustUpdated,
+      trackPulseStyle: this.state.trackJustUpdated ? 'animation: vs-pulse .6s ease 2;' : '',
+      trackIcon: this.state.trackOrder && this.state.trackOrder.status === 'accepted' ? '\u2713' : this.state.trackOrder && this.state.trackOrder.status === 'rejected' ? '\u2715' : '\u23f3',
       dismissTrack: () => { this.setState({ trackOrder: null }); try { localStorage.removeItem('vs_trackOrder'); } catch (e) {} },
       confText: this.state.ordered ? t.conf.replace('{id}', this.state.ordered.id).replace('{total}', this.ron(this.state.ordered.total)).replace('{mode}', this.state.ordered.mode === 'delivery' ? t.confModeD : t.confModeP) : '',
       resetOrder: () => this.setState({ ordered: null })
