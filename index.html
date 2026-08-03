@@ -1180,7 +1180,6 @@ class Component extends DCLogic {
 
     const custValid = this.state.custName.trim() && this.state.custPhone.trim() && (!isDelivery || this.state.custAddress.trim()) && this.state.termsAccepted;
     const placeOrder = (method) => {
-      if (!custValid) return;
       const orderId = 'VS-' + Math.floor(1000 + Math.random() * 9000);
       const items = Object.keys(cart).map(id => { const p = menu.find(m => m.id === id); return p ? { id, qty: cart[id], name: p.name, price: p.price, note: this.state.notes[id] || '' } : null; }).filter(Boolean);
       this.placeOrderSupabase({ name: this.state.custName, phone: this.state.custPhone, address: this.state.custAddress, mode, method, items, subtotal, fee, total, marketingOptIn: this.state.marketingOptIn });
