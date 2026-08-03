@@ -807,7 +807,8 @@ class Component extends DCLogic {
       const timer = setTimeout(() => ctrl.abort(), 10000);
       const r = await fetch('/api/send-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }), signal: ctrl.signal });
       clearTimeout(timer);
-      const d = await r.json();
+      let d = {};
+      try { d = await r.json(); } catch (parseErr) { throw new Error('Serverul nu răspunde corect, încearcă din nou'); }
       if (!r.ok) throw new Error(d.error || 'Eroare');
       this.setState({ otpModalOpen: true, otpSending: false, otpCode: '', otpError: '', pendingMethod: method });
     } catch (e) {
@@ -823,7 +824,8 @@ class Component extends DCLogic {
       const timer = setTimeout(() => ctrl.abort(), 10000);
       const r = await fetch('/api/verify-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code: this.state.otpCode.trim() }), signal: ctrl.signal });
       clearTimeout(timer);
-      const d = await r.json();
+      let d = {};
+      try { d = await r.json(); } catch (parseErr) { throw new Error('Serverul nu răspunde corect, încearcă din nou'); }
       if (!r.ok || !d.valid) throw new Error(d.error || 'Cod greșit');
       this.setState({ otpVerifying: false, otpModalOpen: false, phoneVerified: true, verifiedPhone: phone });
       this.placeOrderPending(this.state.pendingMethod);
