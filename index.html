@@ -194,8 +194,11 @@
               <span style="font: 900 18px 'Archivo', sans-serif; color: #0017c0; white-space: nowrap;">{{ p.priceLbl }}</span>
             </div>
             <p style="margin: 0; font: 400 13.5px/1.45 'Archivo', sans-serif; color: rgba(11,10,10,.58); flex: 1;">{{ p.desc }}</p>
-            <sc-if value="{{ p.hasAllergens }}" hint-placeholder-val="{{ false }}">
-              <p style="margin: 0; font: 600 11.5px/1.4 'Archivo', sans-serif; color: rgba(11,10,10,.42); text-transform: uppercase; letter-spacing: .03em; border-top: 1px solid rgba(11,10,10,.1); padding-top: 8px;">{{ p.allergenLine }}</p>
+            <sc-if value="{{ p.hasInfo }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ p.openInfo }}" style-hover="border-color: #0017c0; color: #0017c0;" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; background: none; border: 1px solid rgba(11,10,10,.2); border-radius: 999px; padding: 6px 12px; cursor: pointer; font: 700 12px 'Archivo', sans-serif; color: rgba(11,10,10,.6); text-transform: uppercase; letter-spacing: .03em;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                {{ t.productInfoBtn }}
+              </button>
             </sc-if>
             <sc-if value="{{ p.inCart }}" hint-placeholder-val="{{ false }}">
               <div style="display: flex; align-items: center; gap: 12px; background: #0017c0; border-radius: 999px; padding: 6px; width: max-content;">
@@ -368,6 +371,17 @@
   </div>
   <div style="margin-top: 18px; font: 400 12.5px/1.6 'Archivo', sans-serif; color: rgba(255,255,255,.8);">© 2026 VLADIMIR SMASH. {{ t.ftRights }}</div>
 </footer>
+
+<!-- ===== PRODUCT INFO MODAL ===== -->
+<sc-if value="{{ productInfoOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeProductInfo }}" style="position: fixed; inset: 0; z-index: 120; background: rgba(11,10,10,.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div onClick="{{ stopProp }}" style="background: rgba(255,255,255,.96); backdrop-filter: blur(30px) saturate(1.8); -webkit-backdrop-filter: blur(30px) saturate(1.8); border: 1px solid rgba(255,255,255,.9); border-radius: 28px; padding: 32px 28px; max-width: 480px; width: 100%; max-height: 78vh; overflow-y: auto; box-shadow: 0 40px 100px rgba(11,10,10,.35);">
+      <h3 style="margin: 0 0 14px; font: 900 20px/1.2 'Archivo', sans-serif; text-transform: uppercase; letter-spacing: -.01em; color: #0017c0;">{{ productInfoName }}</h3>
+      <p style="margin: 0; font: 500 14px/1.7 'Archivo', sans-serif; color: rgba(11,10,10,.75); white-space: pre-line;">{{ productInfoText }}</p>
+      <button onClick="{{ closeProductInfo }}" style-hover="background: #0012a0;" style="width: 100%; margin-top: 22px; height: 46px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 14px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.productInfoClose }}</button>
+    </div>
+  </div>
+</sc-if>
 
 <!-- ===== LEGAL MODAL ===== -->
 <sc-if value="{{ legalOpen }}" hint-placeholder-val="{{ false }}">
@@ -628,7 +642,7 @@
 <div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', marketingOptIn: this.ls('vs_marketingOptIn') !== '0', termsAccepted: false, placing: false, legalOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
+  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', marketingOptIn: this.ls('vs_marketingOptIn') !== '0', termsAccepted: false, placing: false, legalOpen: null, productInfoOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -804,7 +818,7 @@ class Component extends DCLogic {
     this.setState({ otpSending: true, otpError: '' });
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 10000);
+      const timer = setTimeout(() => ctrl.abort(), 25000);
       const r = await fetch('/api/send-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }), signal: ctrl.signal });
       clearTimeout(timer);
       let d = {};
@@ -821,7 +835,7 @@ class Component extends DCLogic {
     this.setState({ otpVerifying: true, otpError: '' });
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 10000);
+      const timer = setTimeout(() => ctrl.abort(), 25000);
       const r = await fetch('/api/verify-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code: this.state.otpCode.trim() }), signal: ctrl.signal });
       clearTimeout(timer);
       let d = {};
@@ -891,7 +905,7 @@ class Component extends DCLogic {
     const activeCatIds = (this.state.liveCats || []).filter(c => c.active !== false).map(c => c.id);
     return this.state.liveProducts.filter(p => p.available !== false && (!this.state.liveCats || activeCatIds.includes(p.cat))).map(p => ({
       id: String(p.id), cat: p.cat, name: p.name, price: p.price,
-      desc: p.desc || '', img: p.img || null,
+      desc: p.desc || '', img: p.img || null, info: p.info || (p.allergens ? p.allergens : ''),
       allergens: p.allergens ? p.allergens.split(',').map(a => a.trim()).filter(Boolean) : null
     }));
   }
@@ -984,7 +998,7 @@ class Component extends DCLogic {
       blurb: { maxi: 'Același gust autentic american, dar mai mare. Chiflă de 5 inch.', smash: 'Gust autentic american. Smash-ul care ne-a făcut cunoscuți.', legends: 'Specialitatea noastră — legendele casei, în lipie.', fries: 'Cartofi proaspăt tăiați, prăjiți la comandă.', drinks: 'Ceva rece lângă smash.' },
       cats: { maxi: 'Maxi Smash', smash: 'Smash Burger', legends: 'Our Legends', fries: 'Fries', drinks: 'Drinks', dessert: 'Dessert' },
       slotHint: 'Trage aici poza produsului',
-      allergenLbl: 'Poate conține', allergenNames: { gluten: 'gluten', milk: 'lactate', egg: 'ouă', mustard: 'muștar' },
+      allergenLbl: 'Poate conține', allergenNames: { gluten: 'gluten', milk: 'lactate', egg: 'ouă', mustard: 'muștar' }, productInfoBtn: 'Informații produs', productInfoClose: 'Închide',
       aboutKicker: 'Despre noi', aboutTitle: 'Fără scurtături. Fără compromisuri.',
       aboutP1: 'Sunt Vladimir, și pentru mine totul a pornit dintr-o pasiune simplă: să fac mâncare bună, făcută corect. Prima mea bucătărie a fost în 2016 — am învățat enorm, apoi am făcut o pauză. Dar dorința de a reveni n-a dispărut niciodată.',
       aboutP2: 'Așa a apărut VLADIMIR SMASH — un loc unde poți mânca un smash burger adevărat, așa cum se face în America: chifle Martin\u2019s aduse din State, carne de vită proaspătă, niciodată congelată, sosuri de calitate și cartofi proaspăt tăiați.',
@@ -1036,7 +1050,7 @@ class Component extends DCLogic {
       blurb: { maxi: 'The same authentic American taste, but bigger. 5-inch bun.', smash: 'Authentic American taste. The smash that made our name.', legends: 'Our specialty — the house legends, in flatbread.', fries: 'Freshly cut fries, cooked to order.', drinks: 'Something cold next to your smash.' },
       cats: { maxi: 'Maxi Smash', smash: 'Smash Burger', legends: 'Our Legends', fries: 'Fries', drinks: 'Drinks', dessert: 'Dessert' },
       slotHint: 'Drop the product photo here',
-      allergenLbl: 'May contain', allergenNames: { gluten: 'gluten', milk: 'milk', egg: 'egg', mustard: 'mustard' },
+      allergenLbl: 'May contain', allergenNames: { gluten: 'gluten', milk: 'milk', egg: 'egg', mustard: 'mustard' }, productInfoBtn: 'Product info', productInfoClose: 'Close',
       aboutKicker: 'About us', aboutTitle: 'No shortcuts. No compromises.',
       aboutP1: 'I\u2019m Vladimir, and for me it all started from a simple passion: making good food, made right. My first kitchen was in 2016 — I learned a lot, then took a break. But the urge to come back never went away.',
       aboutP2: 'That\u2019s how VLADIMIR SMASH was born — a place where you can eat a real smash burger, the way it\u2019s made in America: Martin\u2019s buns from the States, fresh beef, never frozen, quality sauces and freshly cut fries.',
@@ -1145,8 +1159,9 @@ class Component extends DCLogic {
 
     const products = menu.filter(p => p.cat === cat).map(p => {
       const qty = cart[p.id] || 0;
-      const allergenLine = p.allergens ? t.allergenLbl + ': ' + p.allergens.join(', ') : null;
-      return { slotId: 'slot-' + p.id, slotHint: t.slotHint, name: p.name, desc: p.desc, priceLbl: this.ron(p.price), img: p.img, hasImg: !!p.img, noImg: !p.img, allergenLine, hasAllergens: !!allergenLine, qty, inCart: qty > 0, notInCart: qty === 0, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
+      const infoText = p.info || (p.allergens ? t.allergenLbl + ': ' + p.allergens.join(', ') : '');
+      return { slotId: 'slot-' + p.id, slotHint: t.slotHint, name: p.name, desc: p.desc, priceLbl: this.ron(p.price), img: p.img, hasImg: !!p.img, noImg: !p.img,
+        hasInfo: !!infoText, openInfo: () => this.setState({ productInfoOpen: { name: p.name, info: infoText } }), qty, inCart: qty > 0, notInCart: qty === 0, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
     });
 
     const noNoteCatIds = catsData.filter(c => /sos|b\u0103ut|baut|drink|sauce/i.test(c.name)).map(c => c.id);
@@ -1218,6 +1233,7 @@ class Component extends DCLogic {
       cartOpen: this.state.cartOpen, openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }),
       upsellOpen: this.state.upsellOpen, closeUpsell: () => this.setState({ upsellOpen: false, upsellSel: {} }), confirmUpsell, upsellCats, upsellProducts,
       legalOpen: !!this.state.legalOpen, closeLegal: () => this.setState({ legalOpen: null }), stopProp: (e) => e.stopPropagation(),
+      productInfoOpen: !!this.state.productInfoOpen, productInfoName: this.state.productInfoOpen ? this.state.productInfoOpen.name : '', productInfoText: this.state.productInfoOpen ? this.state.productInfoOpen.info : '', closeProductInfo: () => this.setState({ productInfoOpen: null }),
       isTerms: this.state.legalOpen === 'terms', isPrivacy: this.state.legalOpen === 'privacy', isCookies: this.state.legalOpen === 'cookies', isAnpc: this.state.legalOpen === 'anpc',
       posts: this.postsData(), blogListView: true,
       legalTitle: ({ terms: t.legalTerms, privacy: t.legalPrivacy, cookies: t.legalCookies, anpc: t.legalAnpc })[this.state.legalOpen] || '',
