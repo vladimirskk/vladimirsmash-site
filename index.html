@@ -1,66 +1,15 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vladimir Smash — Smash Burgeri Autentici Americani în Baia Mare | Comandă Online</title>
-<meta name="description" content="Smash burgeri autentici americani în Baia Mare — chifle Martin's, carne de vită proaspătă (niciodată congelată), cartofi proaspăt tăiați. Comandă online cu livrare sau ridicare.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://vladimirsmash.ro/">
-<link rel="icon" href="assets/logo-dark.svg" type="image/svg+xml">
-<meta name="theme-color" content="#0017c0">
-<meta property="og:type" content="restaurant.menu">
-<meta property="og:title" content="Vladimir Smash — Smash Burgeri Autentici Americani în Baia Mare">
-<meta property="og:description" content="Chifle Martin's din SUA, carne de vită proaspătă, cartofi proaspăt tăiați. Comandă online, livrare sau ridicare din Baia Mare.">
-<meta property="og:image" content="assets/hero.png">
-<meta property="og:locale" content="ro_RO">
-<meta property="og:url" content="https://vladimirsmash.ro/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Vladimir Smash — Smash Burgeri Autentici Americani">
-<meta name="twitter:description" content="Comandă online smash burgeri autentici americani în Baia Mare — livrare sau ridicare.">
-<meta name="twitter:image" content="assets/hero.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Restaurant",
-  "name": "Vladimir Smash",
-  "servesCuisine": "American",
-  "priceRange": "RON 25-45",
-  "telephone": "+40746027011",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Vasile Alecsandri 15",
-    "addressLocality": "Baia Mare",
-    "addressCountry": "RO"
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-    "opens": "11:00",
-    "closes": "22:00"
-  },
-  "image": "https://vladimirsmash.ro/assets/hero.png",
-  "url": "https://vladimirsmash.ro/",
-  "acceptsReservations": "False",
-  "menu": "https://vladimirsmash.ro/#meniu"
-}
-</script>
 <script src="./support.js"></script>
-<script>
-  try {
-    var vsHero = localStorage.getItem('vs_heroImg');
-    if (vsHero) {
-      var l = document.createElement('link');
-      l.rel = 'preload'; l.as = 'image'; l.href = vsHero; l.fetchPriority = 'high';
-      document.head.appendChild(l);
-    }
-  } catch (e) {}
-</script>
 </head>
 <body>
 <x-dc>
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#0017c0"></rect><text x="100" y="112" font-family="Archivo, sans-serif" font-weight="900" font-size="34" fill="#fff" text-anchor="middle">VS</text></svg></template>
 <helmet>
+  <link rel="icon" href="assets/logo-dark.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
     (function fixViewport() {
@@ -75,6 +24,7 @@
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"></noscript>
+  <script src="./assets/image-slot.js"></script>
   <style>
     :root { --color-accent: #0017c0; --color-accent-100: #e8ebff; --color-accent-200: #c9d0ff; --color-accent-300: #9aa6f5; --color-accent-500: #0017c0; --color-accent-600: #0012a0; --color-accent-700: #000e7d; --color-accent-900: #00073d; --color-bg: #ffffff; --color-text: #0b0a0a; --color-divider: #0b0a0a; }
     html { scroll-behavior: smooth; overflow-x: hidden; touch-action: pan-y; width: 100%; }
@@ -89,7 +39,8 @@
     @keyframes vs-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes vs-slidein { from { transform: translateX(100%); } to { transform: translateX(0); } }
     @keyframes vs-flash { 0% { opacity: 1; } 100% { opacity: 0; } }
-    @keyframes vs-pulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } } { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes vs-pulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } }
+    @keyframes vs-pop { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     @keyframes vs-nudgex { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
   </style>
 </helmet>
@@ -114,6 +65,14 @@
   </div>
 </div>
 
+<sc-if value="{{ storeClosed }}" hint-placeholder-val="{{ false }}">
+  <div style="position: fixed; inset: 0; z-index: 999; background: rgba(5,5,8,.72); display: flex; align-items: center; justify-content: center; padding: 24px;">
+    <div style="max-width: 420px; width: 100%; background: #fff; border-radius: 20px; padding: 40px 32px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.4);">
+      <img src="assets/logo-dark.svg" alt="VLADIMIR SMASH" style="width: 140px; height: auto; margin: 0 auto 20px; display: block;">
+      <p style="margin: 0; color: #0b0a0a; font: 700 18px/1.5 'Archivo', sans-serif;">{{ t.storeClosedMsg }}</p>
+    </div>
+  </div>
+</sc-if>
 <!-- ===== HERO ===== -->
 <section id="top" data-screen-label="Hero" style="position: relative; min-height: 100svh; overflow: hidden; background: #fff; display: flex; flex-direction: column; justify-content: flex-end;">
   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 64px; overflow: hidden;">
@@ -212,6 +171,9 @@
                 <span>{{ t.add }}</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
               </button>
+            </sc-if>
+            <sc-if value="{{ p.closedNotice }}" hint-placeholder-val="{{ false }}">
+              <div style="align-self: flex-start; font: 700 12px 'Archivo', sans-serif; color: rgba(11,10,10,.4); text-transform: uppercase; letter-spacing: .06em; padding: 11px 0;">{{ t.storeClosedMsg }}</div>
             </sc-if>
           </div>
         </div>
@@ -546,9 +508,9 @@
             <sc-if value="{{ sendOtpError }}" hint-placeholder-val="{{ false }}">
               <div style="background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3); color: #c0392b; border-radius: 14px; padding: 10px 14px; font: 600 13px/1.4 'Archivo', sans-serif;">{{ sendOtpError }}</div>
             </sc-if>
-            <button onClick="{{ payCash }}" disabled="{{ otpSending }}" style-hover="background: #0012a0;" style="height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ payCashLbl }}</button>
+            <button onClick="{{ payCash }}" disabled="{{ checkoutDisabled }}" style-hover="background: #0012a0;" style="height: 48px; border-radius: 999px; border: none; cursor: pointer; background: #0017c0; color: #fff; font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ payCashLbl }}</button>
             <div style="display: flex; flex-direction: column; gap: 4px;">
-              <button disabled style="height: 48px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.15); cursor: not-allowed; background: rgba(11,10,10,.04); color: rgba(11,10,10,.35); font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.payCard }}</button>
+              <button disabled="" style="height: 48px; border-radius: 999px; border: 1.5px solid rgba(11,10,10,.15); cursor: not-allowed; background: rgba(11,10,10,.04); color: rgba(11,10,10,.35); font: 800 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase;">{{ t.payCard }}</button>
               <div style="text-align: center; font: 500 12px 'Archivo', sans-serif; color: rgba(11,10,10,.45);">{{ t.payCardSoon }}</div>
             </div>
           </div>
@@ -636,13 +598,11 @@
   </div>
 </sc-if>
 
-<div style="position: absolute; width: 0; height: 0; overflow: hidden; visibility: hidden;">
-  <x-import component-from-global-scope="image-slot" from="./assets/image-slot.js" hint-size="0,0"></x-import>
-</div>
-<div style="position: absolute; left: 501px; background: #0b0a0a; color: #fff; padding: 14px 22px; border-radius: 18px; font: 900 15px 'Archivo', sans-serif; letter-spacing: .06em; text-transform: uppercase; box-shadow: 0 14px 34px rgba(0,0,0,.4); animation: vs-float 7s ease-in-out infinite; top: 2910px">{{ t.aboutSticker }}</div></x-dc>
+
+</x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { lang: 'ro', cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', marketingOptIn: this.ls('vs_marketingOptIn') !== '0', termsAccepted: false, placing: false, legalOpen: null, productInfoOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
+  state = { lang: 'ro', storeOpen: true, cat: null, cart: this.loadCart(), cartOpen: false, mode: 'delivery', zone: 1, ordered: null, upsellOpen: false, upsellCat: null, upsellSel: {}, liveCats: null, liveProducts: null, custName: this.ls('vs_custName') || '', custPhone: this.ls('vs_custPhone') || '', custAddress: this.ls('vs_custAddress') || '', marketingOptIn: this.ls('vs_marketingOptIn') !== '0', termsAccepted: false, placing: false, legalOpen: null, productInfoOpen: null, notes: this.loadNotes(), otpModalOpen: false, otpCode: '', otpSending: false, otpVerifying: false, otpError: '', phoneVerified: false, verifiedPhone: '', pendingMethod: null, heroImg: this.ls('vs_heroImg') || null, aboutImg: this.ls('vs_aboutImg') || null, trackOrder: this.loadTrackOrder() };
   catRowRef = React.createRef();
   productsRef = React.createRef();
   touchX = 0;
@@ -693,15 +653,17 @@ class Component extends DCLogic {
     const sb = window.__sbClient;
     const { data, error } = await sb.from('pos_store').select('store_key,value')
       .eq('restaurant_id', 'vladimirsmash')
-      .in('store_key', ['pos_products', 'pos_cats', 'site_hero_image', 'site_about_image']);
+      .in('store_key', ['pos_products', 'pos_cats', 'site_hero_image', 'site_about_image', 'site_open']);
     if (error) { console.error('Supabase load error', error); return; }
     const cats = data.find(d => d.store_key === 'pos_cats')?.value || [];
     const products = data.find(d => d.store_key === 'pos_products')?.value || [];
     const heroImg = data.find(d => d.store_key === 'site_hero_image')?.value || null;
     const aboutImg = data.find(d => d.store_key === 'site_about_image')?.value || null;
+    const acceptingRow = data.find(d => d.store_key === 'site_open');
+    const accepting = acceptingRow ? acceptingRow.value !== false : true;
     if (heroImg) localStorage.setItem('vs_heroImg', heroImg);
     if (aboutImg) localStorage.setItem('vs_aboutImg', aboutImg);
-    this.setState(s => ({ liveCats: cats, liveProducts: products, heroImg: heroImg || s.heroImg, aboutImg: aboutImg || s.aboutImg, cat: s.cat || (cats[0] && cats[0].id) }));
+    this.setState(s => ({ liveCats: cats, liveProducts: products, heroImg: heroImg || s.heroImg, aboutImg: aboutImg || s.aboutImg, cat: s.cat || (cats[0] && cats[0].id), storeOpen: accepting }));
 
     sb.channel('pos_store_sync')
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'pos_store', filter: 'restaurant_id=eq.vladimirsmash' }, (payload) => {
@@ -714,6 +676,7 @@ class Component extends DCLogic {
         if (row.store_key === 'pos_products') this.setState({ liveProducts: row.value });
         if (row.store_key === 'site_hero_image' && row.value !== this.state.heroImg) { localStorage.setItem('vs_heroImg', row.value); this.setState({ heroImg: row.value }); }
         if (row.store_key === 'site_about_image' && row.value !== this.state.aboutImg) { localStorage.setItem('vs_aboutImg', row.value); this.setState({ aboutImg: row.value }); }
+        if (row.store_key === 'site_open') this.setState({ storeOpen: row.value !== false });
       })
       .subscribe();
   }
@@ -881,7 +844,7 @@ class Component extends DCLogic {
       { id: 'm4', cat: 'maxi', name: 'MAXI WOW BACON SMASH 5"', price: 49, badge: { ro: 'Bestseller', en: 'Bestseller' }, desc: 'Chiflă Martin\u2019s 5", 2 x carne de vită, 2 x American cheese, ceapă caramelizată, sos cheddar, castraveți murați, ketchup, bacon', allergens: ['gluten', 'milk', 'mustard'] },
       { id: 'm5', cat: 'maxi', name: 'MAXI CHICKEN', price: 40, desc: 'Chiflă Martin\u2019s 5", 3 x pui crispy, sos maioneză, sosul casei, salată, castraveți murați', allergens: ['gluten', 'egg', 'milk'] },
       { id: 'm6', cat: 'maxi', name: 'MAXI SPICY SMASH', price: 45, badge: { ro: 'Picant', en: 'Spicy' }, desc: 'Chiflă Martin\u2019s 5", 2 x 80g carne de vită, 2 x American cheese, ardei iute proaspăt, sos ușor picant, sos maioneză', allergens: ['gluten', 'milk', 'egg', 'mustard'] },
-      { id: 's1', cat: 'smash', name: 'AMERICAN CLASSIC', price: 30, badge: { ro: 'Clasicul', en: 'The classic' }, desc: 'Chiflă Martin’s, 2 x carne de vită, 2 x American cheese, ceapă caramelizată, sos cheddar, ketchup, castraveți murați ', allergens: ['gluten', 'milk', 'mustard'] },
+      { id: 's1', cat: 'smash', name: 'AMERICAN CLASSIC', price: 30, badge: { ro: 'Clasicul', en: 'The classic' }, desc: 'Chiflă Martin’s, 2 x carne de vită, 2 x American cheese, ceapă caramelizată, sos cheddar, ketchup, castraveți murați ', allergens: ['gluten', 'milk', 'mustard'] },
       { id: 's2', cat: 'smash', name: 'FRESH SMASH', price: 37, desc: 'Chiflă Martin\u2019s, 2 x carne de vită, 2 x American cheese, salată, roșii, smash sauce', allergens: ['gluten', 'milk', 'egg', 'mustard'] },
       { id: 's3', cat: 'smash', name: 'TRUFFLE SMASH', price: 35, desc: 'Chiflă Martin\u2019s, 2 x carne de vită, 2 x American cheese, truffle mayo, ceapă crocantă', allergens: ['gluten', 'milk', 'egg'] },
       { id: 's4', cat: 'smash', name: 'WOW BACON SMASH', price: 39, badge: { ro: 'Bestseller', en: 'Bestseller' }, desc: 'Chiflă Martin\u2019s, 2 x carne de vită, 2 x American cheese, ceapă caramelizată, sos cheddar, castraveți murați, ketchup, bacon', allergens: ['gluten', 'milk', 'mustard'] },
@@ -992,7 +955,7 @@ class Component extends DCLogic {
       cartBtn: 'Coș', add: 'Adaugă',
       heroTitle1: 'Smash burger', heroTitle2: 'autentic american.',
       heroSub: 'Chifle Martin\u2019s aduse din State, carne de vită proaspătă — niciodată congelată — și cartofi proaspăt tăiați. Livrat fierbinte în Baia Mare.',
-      ctaOrder: 'Comandă acum', ctaStory: 'Povestea noastră',
+      ctaOrder: 'Comandă acum', ctaStory: 'Povestea noastră', storeClosedMsg: 'Momentan nu putem prelua comenzi online. Vă rugăm reveniți mai târziu.',
       tick1: 'Chifle Martin\u2019s din USA', tick2: 'Carne proaspătă, niciodată congelată', tick3: 'Cartofi proaspăt tăiați', tick4: 'Smash după smash',
       orderKicker: 'Comandă online', orderTitle: 'Meniul',
       blurb: { maxi: 'Același gust autentic american, dar mai mare. Chiflă de 5 inch.', smash: 'Gust autentic american. Smash-ul care ne-a făcut cunoscuți.', legends: 'Specialitatea noastră — legendele casei, în lipie.', fries: 'Cartofi proaspăt tăiați, prăjiți la comandă.', drinks: 'Ceva rece lângă smash.' },
@@ -1044,7 +1007,7 @@ class Component extends DCLogic {
       cartBtn: 'Cart', add: 'Add',
       heroTitle1: 'Authentic American', heroTitle2: 'smash burger.',
       heroSub: 'Martin\u2019s buns brought from the States, fresh beef — never frozen — and freshly cut fries. Delivered hot in Baia Mare.',
-      ctaOrder: 'Order now', ctaStory: 'Our story',
+      ctaOrder: 'Order now', ctaStory: 'Our story', storeClosedMsg: 'We are not accepting online orders right now. Back soon!',
       tick1: 'Martin\u2019s buns from the USA', tick2: 'Fresh beef, never frozen', tick3: 'Freshly cut fries', tick4: 'Smash after smash',
       orderKicker: 'Order online', orderTitle: 'The menu',
       blurb: { maxi: 'The same authentic American taste, but bigger. 5-inch bun.', smash: 'Authentic American taste. The smash that made our name.', legends: 'Our specialty — the house legends, in flatbread.', fries: 'Freshly cut fries, cooked to order.', drinks: 'Something cold next to your smash.' },
@@ -1161,7 +1124,7 @@ class Component extends DCLogic {
       const qty = cart[p.id] || 0;
       const infoText = p.info || (p.allergens ? t.allergenLbl + ': ' + p.allergens.join(', ') : '');
       return { slotId: 'slot-' + p.id, slotHint: t.slotHint, name: p.name, desc: p.desc, priceLbl: this.ron(p.price), img: p.img, hasImg: !!p.img, noImg: !p.img,
-        hasInfo: !!infoText, openInfo: () => this.setState({ productInfoOpen: { name: p.name, info: infoText } }), qty, inCart: qty > 0, notInCart: qty === 0, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
+        hasInfo: !!infoText, openInfo: () => this.setState({ productInfoOpen: { name: p.name, info: infoText } }), qty, inCart: qty > 0, notInCart: qty === 0 && this.state.storeOpen, closedNotice: qty === 0 && !this.state.storeOpen, inc: () => (qty === 0 ? addToCart(p.id, qty, p.cat) : setQty(p.id, qty + 1)), dec: () => setQty(p.id, qty - 1) };
     });
 
     const noNoteCatIds = catsData.filter(c => /sos|b\u0103ut|baut|drink|sauce/i.test(c.name)).map(c => c.id);
@@ -1246,7 +1209,9 @@ class Component extends DCLogic {
       selectedZoneDesc: zone === 1 ? t.zone1Desc : t.zone2Desc,
       setRo: () => this.setState({ lang: 'ro' }), setEn: () => this.setState({ lang: 'en' }),
       roBtnStyle: langSeg(lang === 'ro'), enBtnStyle: langSeg(lang === 'en'),
-      payApple: () => placeOrder('apple_pay'), payGoogle: () => placeOrder('google_pay'), payCard: () => placeOrder('card'), payCash: () => this.sendOtp('cash'),
+      storeClosed: !this.state.storeOpen,
+      payApple: this.state.storeOpen ? () => placeOrder('apple_pay') : null, payGoogle: this.state.storeOpen ? () => placeOrder('google_pay') : null, payCard: this.state.storeOpen ? () => placeOrder('card') : null, payCash: this.state.storeOpen ? () => this.sendOtp('cash') : null,
+      checkoutDisabled: !this.state.storeOpen || this.state.otpSending,
       otpModalOpen: this.state.otpModalOpen, otpCode: this.state.otpCode, otpSending: this.state.otpSending, otpVerifying: this.state.otpVerifying, otpError: this.state.otpError,
       sendOtpError: !this.state.otpModalOpen ? this.state.otpError : '', payCashLbl: this.state.otpSending ? 'Se trimite codul…' : t.payCash,
       setOtpCode: (e) => this.setState({ otpCode: e.target.value.replace(/\D/g, '').slice(0, 4) }), verifyOtp: () => this.verifyOtp(), closeOtp: () => this.setState({ otpModalOpen: false }),
